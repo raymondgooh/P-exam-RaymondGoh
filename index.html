@@ -1,0 +1,857 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>P Practice Exam 1</title>
+<style>
+:root{
+  --ink:#24324a;--muted:#6f7a8e;--line:#e7e9ef;--bg:#f7f8f5;--paper:#fff;
+  --sage:#dfeee2;--sage2:#eef6ef;--sageStrong:#6f9b7b;
+  --blue:#e7eefc;--blue2:#f3f6fc;--blueStrong:#5876a4;
+  --rose:#f8e8ea;--roseStrong:#a65b66;--butter:#fff3cf;
+  --shadow:0 18px 55px rgba(38,48,66,.10);--radius:22px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:
+radial-gradient(circle at 10% 10%,rgba(223,238,226,.75),transparent 26rem),
+radial-gradient(circle at 92% 14%,rgba(231,238,252,.72),transparent 24rem),var(--bg)}
+button,input{font:inherit}button{cursor:pointer}.hidden{display:none!important}
+button:disabled{cursor:not-allowed}
+.shell{min-height:100vh}.stars{position:fixed;inset:0;pointer-events:none;opacity:.28;background-image:radial-gradient(circle,#9fabc0 1px,transparent 1px);background-size:34px 34px;mask-image:linear-gradient(to bottom,rgba(0,0,0,.45),transparent 78%)}
+
+/* Landing */
+.start-wrap{min-height:100vh;display:grid;place-items:center;padding:30px 18px}
+.start-card{width:min(1000px,100%);background:rgba(255,255,255,.95);border:1px solid rgba(255,255,255,.94);box-shadow:var(--shadow);border-radius:32px;padding:38px;position:relative;overflow:hidden}
+.start-card:before{content:"";position:absolute;width:230px;height:230px;border-radius:50%;right:-100px;top:-110px;background:var(--sage)}
+.start-card:after{content:"";position:absolute;width:155px;height:155px;border-radius:50%;left:-75px;bottom:-85px;background:var(--blue)}
+.brand{display:flex;align-items:center;gap:13px;position:relative;z-index:2}.mark{width:48px;height:48px;border-radius:16px;background:linear-gradient(145deg,#7f9dc5,#6f9b7b);display:grid;place-items:center;box-shadow:0 8px 20px rgba(72,93,126,.18)}.mark svg{width:28px}
+.eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:900}
+h1{font-size:clamp(35px,5vw,56px);line-height:1.02;margin:23px 0 12px;letter-spacing:-.04em;position:relative;z-index:2}
+.lede{font-size:17px;line-height:1.62;color:var(--muted);max-width:790px;position:relative;z-index:2}
+.mode-tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:24px 0 22px;position:relative;z-index:2}
+.mode-tab{border:1px solid var(--line);border-radius:18px;background:#fff;padding:16px;text-align:left;transition:.18s}
+.mode-tab b{display:block;font-size:16px;margin-bottom:4px}.mode-tab span{font-size:12px;color:var(--muted);line-height:1.45}
+.mode-tab.active{border-color:#829abb;background:#f4f7fc;box-shadow:0 0 0 4px rgba(130,154,187,.12)}
+.mode-tab[data-mode="practice"].active{border-color:#84a88e;background:#f2f8f3;box-shadow:0 0 0 4px rgba(132,168,142,.12)}
+.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:0 0 24px;position:relative;z-index:2}
+.fact{padding:13px 14px;border:1px solid var(--line);border-radius:17px;background:#fff}.fact b{display:block;font-size:17px}.fact span{font-size:11px;color:var(--muted)}
+.section-label{font-size:11px;text-transform:uppercase;letter-spacing:.12em;font-weight:900;color:var(--muted);margin:8px 0 10px;position:relative;z-index:2}
+.set-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;position:relative;z-index:2;margin-bottom:22px}
+.set-card{border:1px solid var(--line);border-radius:20px;background:#fff;padding:16px;min-height:166px;display:flex;flex-direction:column;transition:.18s}
+.set-card:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(36,50,74,.06)}.set-card.selected{border-color:#7893ba;box-shadow:0 0 0 4px rgba(120,147,186,.12);background:#fbfcff}.set-card.locked{background:#fafafa}
+.set-top{display:flex;align-items:center;justify-content:space-between;gap:8px}.set-num{font-weight:950;font-size:18px}.pill{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;border-radius:999px;padding:6px 9px;background:var(--sage2);color:#55735e}.pill.lock{background:#fff0f2;color:#985964}.pill.study{background:#edf5ef;color:#55735e}
+.set-name{font-size:13px;line-height:1.4;color:var(--muted);margin-top:8px;min-height:38px}.set-meta{font-size:11px;color:#8791a2;margin-top:8px}.set-action{margin-top:auto;border:1px solid #dce1e8;background:#fff;border-radius:12px;padding:9px 11px;font-size:12px;font-weight:850;color:var(--ink)}
+.set-card.selected .set-action{background:#eef4fc;border-color:#cdd9eb;color:#4f6e9b}.set-card.locked .set-action{background:#fff8f9;color:#89535a;border-color:#ead0d4}
+.name-label{display:block;font-size:13px;font-weight:850;margin:12px 0 8px;position:relative;z-index:2}.name-row{display:flex;gap:12px;position:relative;z-index:2}.name-input{flex:1;border:1px solid #d8dde7;border-radius:16px;padding:15px 16px;outline:none;background:#fff}.name-input:focus{border-color:#8fa6c8;box-shadow:0 0 0 4px rgba(143,166,200,.16)}
+.primary{border:0;background:var(--ink);color:#fff;border-radius:16px;padding:14px 20px;font-weight:850;box-shadow:0 10px 24px rgba(36,50,74,.16)}.primary:hover{transform:translateY(-1px)}
+.error{color:#a24f5b;font-size:13px;font-weight:800;min-height:20px;margin-top:7px}.note{font-size:12px;line-height:1.55;color:var(--muted);margin-top:13px;position:relative;z-index:2}
+
+/* Exam / practice shell */
+.topbar{height:76px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.92);backdrop-filter:blur(16px);position:sticky;top:0;z-index:40}
+.top-left{display:flex;align-items:center;gap:12px;min-width:0}.mini{width:34px;height:34px;border-radius:11px;background:linear-gradient(145deg,#7f9dc5,#6f9b7b);display:grid;place-items:center}.mini svg{width:20px}.top-title{font-weight:950}.candidate{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top-right{display:flex;align-items:center;gap:9px}.timer{border:1px solid var(--line);border-radius:14px;padding:8px 12px;background:#fff;min-width:128px}.timer small{display:block;font-size:9px;color:var(--muted);font-weight:850;text-transform:uppercase;letter-spacing:.08em}.timer strong{font-size:18px;font-variant-numeric:tabular-nums}.study-chip{border:1px solid #cfe1d3;background:#f1f8f2;color:#587461;border-radius:14px;padding:10px 13px;font-size:12px;font-weight:900}
+.end-btn{border:1px solid #e0c8cc;background:#fff7f8;color:#8d4d56;border-radius:14px;padding:10px 13px;font-weight:850}
+.exam-grid{display:grid;grid-template-columns:250px minmax(0,1fr);min-height:calc(100vh - 76px)}.sidebar{padding:23px 20px;border-right:1px solid var(--line);background:rgba(251,252,249,.86);position:sticky;top:76px;height:calc(100vh - 76px);overflow:auto}
+.progress-label{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);font-weight:850}.progress-track{height:8px;background:#eceff3;border-radius:999px;margin:9px 0 18px;overflow:hidden}.progress-fill{height:100%;width:0;background:linear-gradient(90deg,#7fa88a,#7894bb)}
+.palette{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.qdot{aspect-ratio:1;border-radius:12px;border:1px solid #dfe3eb;background:#fff;color:var(--ink);font-weight:850;position:relative}.qdot.current{outline:3px solid rgba(85,114,170,.17);border-color:#7188ad}.qdot.answered{background:#eef3fb;border-color:#c9d5e7}.qdot.revealed{background:#edf5ef;border-color:#b9d2bf}.qdot.flagged:after{content:"";width:7px;height:7px;border-radius:50%;position:absolute;right:4px;top:4px;background:#d48b94}
+.legend{display:grid;gap:7px;margin-top:20px;font-size:11px;color:var(--muted)}.legend-row{display:flex;align-items:center;gap:8px}.legend-chip{width:15px;height:15px;border:1px solid #dfe3eb;border-radius:5px;background:#fff}.legend-chip.answered{background:#eef3fb;border-color:#c9d5e7}.legend-chip.revealed{background:#edf5ef;border-color:#b9d2bf}
+.side-tip{margin-top:22px;padding:12px;border-radius:14px;background:var(--butter);font-size:11px;line-height:1.48;color:#685c3f}
+.question-area{padding:33px clamp(22px,5vw,72px) 44px;display:flex;justify-content:center}.question-wrap{width:min(920px,100%)}
+.qmeta{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:17px}.qcount{font-size:13px;color:var(--muted);font-weight:850}.tag-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.tag{font-size:11px;font-weight:850;border-radius:999px;padding:7px 10px;background:var(--blue);color:#526b94}.tag.soft{background:var(--sage);color:#56765f}.qtime{text-align:right;border:1px solid var(--line);background:#fff;border-radius:14px;padding:9px 11px;min-width:116px}.qtime small{display:block;color:var(--muted);font-size:9px;font-weight:850;text-transform:uppercase;letter-spacing:.06em}.qtime strong{font-variant-numeric:tabular-nums}
+.question-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 12px 38px rgba(35,48,72,.06);padding:clamp(24px,4vw,40px)}.question-text{font-size:clamp(20px,2.2vw,27px);line-height:1.5;font-weight:760;letter-spacing:-.015em;margin:0 0 26px}.choices{display:grid;gap:11px}.choice{width:100%;border:1px solid #dfe3ea;background:#fff;border-radius:17px;padding:14px 15px;text-align:left;display:grid;grid-template-columns:42px 1fr;align-items:center;gap:12px;color:var(--ink);transition:.16s}.choice:hover:not(:disabled){border-color:#9baac1;transform:translateY(-1px)}.choice.selected{border-color:#7893ba;background:#f1f5fb;box-shadow:0 0 0 3px rgba(120,147,186,.12)}.choice.correct{border-color:#8bb097;background:#eff7f1}.choice.wrong{border-color:#d69aa3;background:#fff3f4}.letter{width:34px;height:34px;border-radius:11px;border:1px solid #dce1e9;display:grid;place-items:center;font-weight:950;background:#fafbfc}.choice.selected .letter{background:#6d87ae;color:#fff;border-color:#6d87ae}.choice.correct .letter{background:#719a7c;color:#fff;border-color:#719a7c}.choice.wrong .letter{background:#b86f79;color:#fff;border-color:#b86f79}
+.nav-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:17px}.nav-left,.nav-right{display:flex;gap:9px}.secondary{border:1px solid #dce1e8;background:#fff;border-radius:14px;padding:11px 14px;color:var(--ink);font-weight:850}.flag-btn.active{background:#fff1f3;border-color:#e5bdc4;color:#9d5c65}.next{background:var(--ink);color:#fff;border-color:var(--ink)}
+.reveal-btn{background:#5f7f69;color:#fff;border-color:#5f7f69}.reveal-btn:disabled{opacity:.5}
+
+/* Revealed solution */
+.solution-panel{margin-top:18px;border:1px solid #dce8df;border-radius:22px;background:linear-gradient(180deg,#fbfefb,#f7faf8);overflow:hidden;animation:solutionIn .42s ease both}
+@keyframes solutionIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.solution-head{padding:20px 22px;border-bottom:1px solid #e4ece6;display:flex;justify-content:space-between;gap:14px;align-items:center}.solution-title{font-size:18px;font-weight:950}.answer-badge{border-radius:999px;padding:8px 12px;font-size:12px;font-weight:950;background:#dfeee2;color:#4c7357}.answer-badge.bad{background:#f8e8ea;color:#96555f}
+.formula-guide{margin:18px 20px 0;padding:15px 16px;border-radius:16px;background:#fff;border:1px solid #e2e8e3}.formula-guide b{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#688073;margin-bottom:6px}.formula-guide p{margin:0;font-size:13px;line-height:1.55;color:#4e5c53}
+.visual-box{margin:14px 20px 0;border:1px solid #dde7df;background:
+  radial-gradient(circle at 12% 14%,rgba(223,238,226,.48),transparent 180px),
+  radial-gradient(circle at 88% 8%,rgba(231,238,252,.52),transparent 190px),
+  #fff;border-radius:20px;padding:0;overflow:hidden;min-height:220px}
+.visual-titlebar{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 15px;border-bottom:1px solid #e6ece7;background:rgba(255,255,255,.82)}
+.visual-titlebar b{font-size:12px}.visual-titlebar span{font-size:10px;color:#7b8795;font-weight:800;text-transform:uppercase;letter-spacing:.07em}
+.visual-canvas{padding:10px 12px 8px;display:grid;place-items:center}
+.visual-canvas svg{width:100%;max-height:230px}
+.visual-caption{padding:0 15px 13px;text-align:center;font-size:11px;line-height:1.45;color:#6e7886}
+.draw{stroke-dasharray:900;stroke-dashoffset:900;animation:drawLine 1.15s ease forwards}.drawFast{stroke-dasharray:500;stroke-dashoffset:500;animation:drawLine .75s ease forwards}
+.pop{transform-origin:center;opacity:0;animation:popIn .42s cubic-bezier(.2,.75,.3,1.25) forwards}.pop2{animation-delay:.18s}.pop3{animation-delay:.36s}.pop4{animation-delay:.54s}.pop5{animation-delay:.72s}
+.float{animation:floaty 2.2s ease-in-out infinite}.pulse{animation:pulseGlow 1.8s ease-in-out infinite}.dashMove{stroke-dasharray:8 8;animation:dashShift 1.2s linear infinite}
+.fadeIn{opacity:0;animation:fadeIn .55s ease forwards}.fade2{animation-delay:.25s}.fade3{animation-delay:.5s}
+@keyframes drawLine{to{stroke-dashoffset:0}}@keyframes popIn{from{opacity:0;transform:scale(.72)}to{opacity:1;transform:scale(1)}}@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}@keyframes pulseGlow{0%,100%{opacity:.65}50%{opacity:1}}@keyframes dashShift{to{stroke-dashoffset:-32}}@keyframes fadeIn{to{opacity:1}}
+.steps{padding:18px 20px 5px;display:grid;gap:10px}.step{display:grid;grid-template-columns:38px 1fr;gap:12px;background:#fff;border:1px solid #e4e9e5;border-radius:16px;padding:14px;opacity:0;transform:translateY(8px);animation:stepIn .4s ease forwards}.step:nth-child(1){animation-delay:.05s}.step:nth-child(2){animation-delay:.14s}.step:nth-child(3){animation-delay:.23s}.step:nth-child(4){animation-delay:.32s}.step:nth-child(5){animation-delay:.41s}.step:nth-child(6){animation-delay:.50s}.step:nth-child(7){animation-delay:.59s}
+@keyframes stepIn{to{opacity:1;transform:translateY(0)}}.step-num{width:34px;height:34px;border-radius:11px;background:#e9f2eb;color:#5f7f69;display:grid;place-items:center;font-weight:950}.step h4{margin:0 0 6px;font-size:13px}.mathline{font-family:"Cambria Math","STIX Two Math",Georgia,serif;font-size:16px;line-height:1.55;color:#27364e;background:#f8faf9;border-radius:10px;padding:9px 10px;margin:0 0 7px;overflow-wrap:anywhere}.step p{margin:0;color:#65706a;font-size:12px;line-height:1.55}
+.trap{margin:10px 20px 20px;padding:13px 15px;border-radius:15px;background:#fff6df;border:1px solid #f0dfad;font-size:12px;line-height:1.5;color:#6e6140}.trap b{color:#5f5334}
+
+/* Modals */
+.modal-bg{position:fixed;inset:0;background:rgba(26,35,50,.38);display:grid;place-items:center;padding:20px;z-index:90;backdrop-filter:blur(4px)}.modal{width:min(470px,100%);background:#fff;border-radius:24px;padding:27px;box-shadow:0 30px 90px rgba(20,31,48,.24)}.modal-icon{width:49px;height:49px;border-radius:16px;background:var(--rose);display:grid;place-items:center;font-size:21px}.modal h3{font-size:22px;margin:15px 0 7px}.modal p{color:var(--muted);font-size:13px;line-height:1.55}.modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}.pass-input{width:100%;border:1px solid #d8dde7;border-radius:14px;padding:13px 14px;outline:none}.pass-error{min-height:20px;color:#a24f5b;font-size:12px;font-weight:850;margin-top:7px}
+
+/* Results */
+.result-wrap{min-height:100vh;padding:34px 20px 60px;display:grid;place-items:start center}.result-shell{width:min(960px,100%)}.result-note{text-align:center;color:var(--muted);font-size:12px;margin-bottom:14px;font-weight:750}
+.result-paper{background:#fff;border:1px solid #dfe4da;border-top:4px solid #88aa72;box-shadow:var(--shadow);min-height:535px;position:relative;overflow:hidden;padding:40px 48px}.result-paper:before{content:"";position:absolute;width:320px;height:760px;background:#f1f2f1;left:-165px;top:-80px;transform:rotate(10deg)}.paper-inner{position:relative;z-index:2}.paper-head{display:flex;justify-content:space-between;align-items:flex-start;gap:20px}.paper-name{font-weight:950;font-size:17px}.practice-logo{display:flex;gap:11px;align-items:center}.practice-logo svg{width:56px}.practice-logo b{display:block;font-size:20px;letter-spacing:.05em}.practice-logo span{font-size:10px;color:var(--muted);letter-spacing:.12em;font-weight:850}.paper-meta{display:grid;grid-template-columns:auto auto;justify-content:end;gap:4px 8px;margin-top:62px;font-size:13px}.paper-meta b{text-align:right}.paper-title{margin-top:18px;font-size:18px;font-weight:950}.result-status{display:inline-flex;align-items:center;gap:9px;margin-top:21px;padding:10px 14px;border-radius:999px;font-weight:950;font-size:12px;letter-spacing:.05em;text-transform:uppercase}.result-status.pass{background:#e7f3e8;color:#4d7556}.result-status.fail{background:#f8e8ea;color:#96555f}.result-status i{width:8px;height:8px;border-radius:50%;background:currentColor}.result-message{margin-top:13px;max-width:800px;font-size:13px;line-height:1.58;color:#464d59}.disclaimer{margin-top:25px;padding:12px 14px;border-radius:12px;background:#f7f8fa;color:#6c7586;font-size:11px;line-height:1.5;border:1px solid #eceef2}
+.result-actions{margin-top:20px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px;display:flex;gap:10px;justify-content:center;box-shadow:0 10px 28px rgba(35,48,72,.05)}.download{background:#5f7f69;color:#fff;border:0;border-radius:14px;padding:12px 16px;font-weight:900}
+
+
+.math{font-family:"Cambria Math","STIX Two Math",Georgia,serif;font-weight:500;letter-spacing:0}.annuity-angle{display:inline-block;border-top:1.4px solid currentColor;border-right:1.4px solid currentColor;padding:0 .22em 0 .16em;margin-left:.06em;line-height:1.02;transform:translateY(.08em);font-size:.86em}.choice-text .math{font-size:1.07em}.formula-block{margin:16px 0;padding:14px 16px;background:#f8faf9;border:1px solid #e4e9e5;border-radius:14px;line-height:1.75}.inline-table-wrap{margin:18px 0;overflow-x:auto}.inline-table{border-collapse:collapse;min-width:300px;font-size:16px;background:#fff}.inline-table th,.inline-table td{padding:8px 18px;border-bottom:1px solid #bcc4cf;text-align:center}.inline-table th{font-weight:850;border-top:1px solid #bcc4cf}.question-bullets{margin:14px 0 0 22px;padding:0}.question-bullets li{margin:8px 0}.question-text em{font-family:Georgia,serif}.choice-text{line-height:1.5}
+@media(max-width:840px){.facts{grid-template-columns:repeat(2,1fr)}.set-grid{grid-template-columns:1fr}.set-card{min-height:auto}.exam-grid{grid-template-columns:1fr}.sidebar{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line);padding:14px 20px}.palette{grid-template-columns:repeat(10,1fr)}.legend,.side-tip{display:none}.candidate{display:none}.question-area{padding-top:23px}.paper-head{flex-direction:column}.paper-meta{margin-top:28px;justify-content:start}.paper-meta b{text-align:left}.practice-logo{align-self:flex-end}.result-paper{padding:28px 24px}}
+@media(max-width:540px){.start-card{padding:27px 21px}.mode-tabs{grid-template-columns:1fr}.facts{grid-template-columns:1fr 1fr}.name-row{flex-direction:column}.topbar{padding:0 12px}.timer{min-width:92px}.timer small{display:none}.timer strong{font-size:16px}.palette{grid-template-columns:repeat(6,1fr)}.qmeta{align-items:stretch}.nav-row{flex-direction:column;align-items:stretch}.nav-left,.nav-right{width:100%}.nav-left button,.nav-right button{flex:1}.step{grid-template-columns:34px 1fr}}
+
+/* Single-assessment edition */
+.mode-tabs,.section-label,#setGrid{display:none!important}
+.start-card{width:min(880px,100%)}
+.question-text{display:block}
+.question-card{padding:clamp(24px,4vw,40px)}
+.question-image-wrap,.question-image{display:none!important}
+.choices{display:grid;grid-template-columns:1fr;gap:11px}
+.choice{grid-template-columns:42px 1fr;justify-items:stretch;text-align:left;padding:14px 15px}
+.choice .letter{width:34px;height:34px;font-size:15px}
+.choice .choice-text{display:block;line-height:1.55;font-size:16px}
+@media(max-width:620px){.choices{grid-template-columns:1fr}.choice{padding:13px 12px;grid-template-columns:38px 1fr}.choice .letter{width:34px;height:34px}.choice .choice-text{font-size:15px}}
+
+/* Rich preliminary result */
+.result-note{text-align:center;color:var(--muted);font-size:12px;margin-bottom:14px;font-weight:800;letter-spacing:.02em}
+.result-paper{min-height:560px;padding:42px 48px}
+.result-kicker{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#8390a2;font-weight:950;margin-bottom:6px}
+.paper-name{font-size:24px;letter-spacing:-.02em}
+.result-divider{height:1px;background:#e7e9ef;margin:28px 0 30px}
+.result-main-grid{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:start}
+.paper-title{margin-top:0;font-size:25px;letter-spacing:-.025em}
+.paper-subtitle{margin-top:6px;color:var(--muted);font-size:14px;font-weight:750}
+.paper-meta{display:grid;grid-template-columns:auto auto;justify-content:end;gap:8px 14px;margin-top:0;font-size:13px;min-width:330px}
+.paper-meta b{text-align:right;color:#758197;font-size:11px;text-transform:uppercase;letter-spacing:.06em}
+.paper-meta span{font-weight:800;color:#2f3d56}
+.result-outcome{margin-top:46px;padding:25px 26px;border:1px solid #e6e9ee;border-radius:20px;background:rgba(255,255,255,.78)}
+.result-status{font-size:14px;padding:11px 15px;margin-top:5px}
+.result-message{font-size:14px;line-height:1.65;max-width:760px;margin-top:14px}
+.result-footnote{margin-top:28px;color:#7b8597;font-size:11px;line-height:1.55}
+.report-box{margin-top:20px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:19px 20px;display:flex;justify-content:space-between;align-items:center;gap:24px;box-shadow:0 10px 28px rgba(35,48,72,.05)}
+.report-box h3{margin:0 0 5px;font-size:16px}
+.report-box p{margin:0;color:var(--muted);font-size:12px;line-height:1.55}
+.fresh-attempt-btn{display:block;margin:12px auto 0}
+@media(max-width:760px){
+  .result-main-grid{grid-template-columns:1fr}
+  .paper-meta{justify-content:start;min-width:0}
+  .paper-meta b{text-align:left}
+  .report-box{flex-direction:column;align-items:stretch}
+  .report-box .download{width:100%}
+}
+
+</style>
+</head>
+<body>
+<div class="stars"></div>
+<div class="shell">
+
+<section id="startScreen" class="start-wrap">
+  <div class="start-card">
+    <div class="brand">
+      <div class="mark"><svg viewBox="0 0 48 48" fill="none"><path d="M24 5 39 12v10c0 10.3-6.3 17.3-15 21-8.7-3.7-15-10.7-15-21V12L24 5Z" fill="white"/><path d="M16 23.5 22 29l10-11" stroke="#6f9b7b" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div><div class="eyebrow">P Practice Exam</div><div style="font-weight:950">Practice Exam 1</div></div>
+    </div>
+    <h1>Practice Exam 1<br>Probability ✦</h1>
+    <p class="lede">A 30-question timed assessment based on the supplied pages. Your answers stay hidden until submission, and the end screen shows only a preliminary pass / did-not-pass result.</p>
+
+    <div class="mode-tabs">
+      <button class="mode-tab active" data-mode="mock"><b>⏱ Timed Mock Exams</b><span>30 questions · 3 hours · preliminary result · PDF attempt report.</span></button>
+      <button class="mode-tab" data-mode="practice"><b>🌱 Guided Practice Sets</b><span>No timer · reveal the answer question-by-question · step-by-step solution + animated visual.</span></button>
+    </div>
+
+    <div id="facts" class="facts"></div>
+
+    <div class="section-label">Choose a set</div>
+    <div id="setGrid" class="set-grid"></div>
+
+    <label class="name-label" for="studentName">Student name</label>
+    <div class="name-row">
+      <input id="studentName" class="name-input" autocomplete="name" placeholder="Type your name">
+      <button id="startBtn" class="primary">Begin →</button>
+    </div>
+    <div id="nameError" class="error"></div>
+    <p id="landingNote" class="note">Questions and answer choices are fully typed with exam-style notation. Correct answers and solutions are hidden during the assessment.</p>
+  </div>
+</section>
+
+<section id="workScreen" class="hidden">
+  <header class="topbar">
+    <div class="top-left">
+      <div class="mini"><svg viewBox="0 0 48 48"><path d="M24 5 39 12v10c0 10.3-6.3 17.3-15 21-8.7-3.7-15-10.7-15-21V12L24 5Z" fill="white"/></svg></div>
+      <div><div id="topTitle" class="top-title"></div><div id="candidateLabel" class="candidate"></div></div>
+    </div>
+    <div class="top-right">
+      <div id="timerBox" class="timer"><small>Time remaining</small><strong id="mainTimer">03:00:00</strong></div>
+      <div id="studyChip" class="study-chip hidden">Untimed study mode</div>
+      <button id="endBtn" class="end-btn">Finish</button>
+    </div>
+  </header>
+
+  <div class="exam-grid">
+    <aside class="sidebar">
+      <div class="progress-label"><span id="progressName">Answered</span><span id="progressLabel">0 / 30</span></div>
+      <div class="progress-track"><div id="progressFill" class="progress-fill"></div></div>
+      <div id="palette" class="palette"></div>
+      <div id="legend" class="legend"></div>
+      <div id="sideTip" class="side-tip"></div>
+    </aside>
+
+    <main class="question-area">
+      <div class="question-wrap">
+        <div class="qmeta">
+          <div><div id="qCount" class="qcount"></div><div class="tag-row"><span id="topicTag" class="tag"></span><span id="subtopicTag" class="tag soft"></span></div></div>
+          <div id="qtimeBox" class="qtime"><small>Time on question</small><strong id="qTimer">00:00:00</strong></div>
+        </div>
+
+        <article class="question-card">
+          <p id="questionText" class="question-text"></p>
+          <div id="choices" class="choices"></div>
+        </article>
+
+        <div id="solutionPanel" class="solution-panel hidden"></div>
+
+        <div class="nav-row">
+          <div class="nav-left">
+            <button id="prevBtn" class="secondary">← Previous</button>
+            <button id="flagBtn" class="secondary flag-btn">☆ Flag</button>
+          </div>
+          <div class="nav-right">
+            <button id="revealBtn" class="secondary reveal-btn hidden">Reveal answer & solution ✦</button>
+            <button id="nextBtn" class="secondary next">Next →</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</section>
+
+<section id="resultScreen" class="result-wrap hidden">
+  <div class="result-shell">
+    <div class="result-note">Practice Exam 1 · Preliminary Result</div>
+
+    <div class="result-paper">
+      <div class="paper-inner">
+        <div class="paper-head">
+          <div>
+            <div class="result-kicker">CANDIDATE</div>
+            <div id="resultName" class="paper-name"></div>
+          </div>
+          <div class="practice-logo">
+            <svg viewBox="0 0 70 70" fill="none" aria-hidden="true">
+              <path d="M35 5 60 16v17c0 17-10.5 28.5-25 34C20.5 61.5 10 50 10 33V16L35 5Z" fill="#e7eefc"/>
+              <path d="M35 12 53 20v13c0 12.5-7.1 21.4-18 26-10.9-4.6-18-13.5-18-26V20l18-8Z" fill="#6f89ad"/>
+              <path d="m25 35 7 7 14-16" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div><b>P PRACTICE</b><span>PRELIMINARY RESULT</span></div>
+          </div>
+        </div>
+
+        <div class="result-divider"></div>
+
+        <div class="result-main-grid">
+          <div>
+            <div class="result-kicker">EXAM</div>
+            <div class="paper-title">Practice Exam 1</div>
+            <div class="paper-subtitle">Probability</div>
+          </div>
+          <div id="resultMeta" class="paper-meta"></div>
+        </div>
+
+        <div class="result-outcome">
+          <div class="result-kicker">PRELIMINARY OUTCOME</div>
+          <div id="resultStatus" class="result-status"><i></i><span></span></div>
+          <div id="resultMessage" class="result-message"></div>
+        </div>
+
+        <div class="result-footnote">
+          The numerical score and answer key are intentionally not shown on this page.
+        </div>
+      </div>
+    </div>
+
+    <div class="report-box">
+      <div>
+        <h3>Attempt report 📄</h3>
+        <p>Download a PDF containing the student's selected answer and time spent for every question. It does <b>not</b> contain the correct answers or numerical score.</p>
+      </div>
+      <button id="downloadBtn" class="download">Download attempt PDF ↓</button>
+    </div>
+
+    <button id="homeBtn" class="secondary fresh-attempt-btn">Start a fresh attempt</button>
+  </div>
+</section>
+
+<div id="passModal" class="modal-bg hidden">
+  <div class="modal">
+    <div class="modal-icon">🔒</div>
+    <h3 id="passTitle">Unlock set</h3><p id="passCopy"></p>
+    <input id="passInput" class="pass-input" type="password" inputmode="numeric" autocomplete="off" placeholder="Passkey">
+    <div id="passError" class="pass-error"></div>
+    <div class="modal-actions"><button id="cancelPassBtn" class="secondary">Cancel</button><button id="unlockBtn" class="primary">Unlock</button></div>
+  </div>
+</div>
+
+<div id="finishModal" class="modal-bg hidden">
+  <div class="modal">
+    <div class="modal-icon">✦</div>
+    <h3 id="finishTitle">Finish this session?</h3><p id="finishCopy"></p>
+    <div class="modal-actions"><button id="keepBtn" class="secondary">Keep working</button><button id="finishConfirmBtn" class="primary">Yes, finish</button></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+const SETS = {"1":{"id":1,"label":"Practice Exam 1","name":"Probability","difficulty":"Practice assessment","locked":false,"questions":[{"id":1,"topic":"General Probability","subtopic":"Independence","question":"Six actuarial students are all equally likely to pass Exam P. Their probabilities of passing are mutually independent. The probability all 6 pass is 0.24. Calculate the variance of the number of students who pass.","choices":{"A":"0.98","B":"1.00","C":"1.02","D":"1.04","E":"1.06"}},{"id":2,"topic":"Discrete Distributions","subtopic":"Poisson distribution","question":"The number of claims in a year, <span class='math'>N</span>, on an insurance policy has a Poisson distribution with mean 0.25. The numbers of claims in different years are mutually independent. Calculate the probability of 3 or more claims over a period of 2 years.","choices":{"A":"0.001","B":"0.010","C":"0.012","D":"0.014","E":"0.016"}},{"id":3,"topic":"Continuous Distributions","subtopic":"Expected value from CDF","question":"Claim sizes on an insurance policy have the following distribution function:<div class='formula-block math'>F(x)=0 for x≤0;<br>F(x)=0.0002x for 0&lt;x&lt;1000;<br>F(x)=0.4 for x=1000;<br>F(x)=1−0.6e<sup>−(x−1000)/2000</sup> for x&gt;1000.</div>Calculate expected claim size.","choices":{"A":"1500","B":"1700","C":"1900","D":"2100","E":"2300"}},{"id":4,"topic":"Covariance","subtopic":"Variance of a sum","question":"An actuary analyzes weekly sales of automobile insurance, <span class='math'>X</span>, and homeowners insurance, <span class='math'>Y</span>. The analysis reveals that <span class='math'>Var(X)=2500</span>, <span class='math'>Var(Y)=900</span>, and <span class='math'>Var(X+Y)=3100</span>. Calculate the correlation of <span class='math'>X</span> and <span class='math'>Y</span>.","choices":{"A":"−0.2","B":"−0.1","C":"0","D":"0.1","E":"0.2"}},{"id":5,"topic":"Multivariate Probability","subtopic":"Joint CDF","question":"Several teams of two students compete in a math competition. In the competition, each student is given a set of problems to complete in 1 hour.<br><br>Let <span class='math'>F(m,n)</span> represent the joint cumulative distribution function for the number of questions completed by each student in a team in an hour.<br><br>Determine which of the following represents the probability that both students complete at least 5 questions in an hour.","choices":{"A":"1 − F(5,5)","B":"1 − F(5,0) − F(0,5)","C":"1 − F(5,∞) − F(∞,5)","D":"1 − F(5,∞) − F(∞,5) + F(5,5)","E":"1 − F(5,∞) − F(∞,5) + F(∞,∞)"}},{"id":6,"topic":"Discrete Distributions","subtopic":"Negative binomial","question":"The probability of rain each day is the same, and occurrences of rain are mutually independent. The expected number of non-rainy days before the next rain is 4. Calculate the probability that the second rain will not occur before 7 non-rainy days.","choices":{"A":"0.11","B":"0.23","C":"0.40","D":"0.50","E":"0.55"}},{"id":7,"topic":"Multivariate Continuous Distributions","subtopic":"Joint density","question":"On a certain day, you have a staff meeting and an actuarial training class. Time in hours for the staff meeting is <span class='math'>X</span> and time in hours for the actuarial training session is <span class='math'>Y</span>. <span class='math'>X</span> and <span class='math'>Y</span> have the joint density function<div class='formula-block math'>f(x,y)=(3x+y)/250, &nbsp;0≤x≤5, 0≤y≤5;<br>f(x,y)=0 otherwise.</div>Calculate the expected total hours spent in the staff meeting and actuarial training class.","choices":{"A":"3.33","B":"4.25","C":"4.67","D":"5.17","E":"5.83"}},{"id":8,"topic":"Continuous Distributions","subtopic":"Maximum of independent variables","question":"In a small metropolitan area, annual losses due to storm and fire are assumed to be independent, exponentially distributed random variables with respective means 1.0 and 2.0. Calculate the expected value of the maximum of these losses.","choices":{"A":"2.33","B":"2.44","C":"2.56","D":"2.67","E":"2.78"}},{"id":9,"topic":"Continuous Distributions","subtopic":"Percentile from CDF","question":"A continuous random variable <span class='math'>X</span> has the following distribution function:<div class='formula-block math'>F(x)=0 for x≤0;<br>F(3)=0.2;<br>F(8)=0.4;<br>F(16)=0.7;<br>F(x)=1 for x≥34.</div>For <span class='math'>0&lt;x&lt;34</span> not specified, <span class='math'>F(x)</span> is determined by linear interpolation between the nearest two specified values. Calculate the 80th percentile of <span class='math'>X</span>.","choices":{"A":"20","B":"22","C":"24","D":"26","E":"28"}},{"id":10,"topic":"Transformations","subtopic":"Uniform measurement error","question":"The side of a cube is measured with a ruler. The error in the measurement is uniformly distributed on <span class='math'>[−0.2,0.2]</span>. The measurement is 4. Calculate the expected volume of the cube.","choices":{"A":"63.84","B":"63.92","C":"64.00","D":"64.08","E":"64.16"}},{"id":11,"topic":"Multivariate Discrete Distributions","subtopic":"Conditional probability","question":"For each sale of insurance, let <span class='math'>X</span> be the number of days to complete underwriting and let <span class='math'>Y</span> be the number of days to complete the sale. The distribution of <span class='math'>X</span> and <span class='math'>Y</span> is given below:<div class='inline-table-wrap'><table class='inline-table'><tr><th>X  Y</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th></tr><tr><td>1</td><td>0.04</td><td>0.06</td><td>0.05</td><td>0</td><td>0</td><td>0</td></tr><tr><td>2</td><td>0</td><td>0.07</td><td>0.10</td><td>0.08</td><td>0</td><td>0</td></tr><tr><td>3</td><td>0</td><td>0</td><td>0.09</td><td>0.15</td><td>0.12</td><td>0</td></tr><tr><td>4</td><td>0</td><td>0</td><td>0</td><td>0.05</td><td>0.10</td><td>0.09</td></tr></table></div>Calculate the probability that underwriting takes 2 days or less given that completing the sale takes 5 days or less.","choices":{"A":"0.54","B":"0.57","C":"0.60","D":"0.63","E":"0.66"}},{"id":12,"topic":"Loss Models","subtopic":"Policy limit and coinsurance","question":"An insurance coverage provides for an insurance payment of 80% of the loss. The policy limit is 1000. The limit is applied before the multiplication by 80%. Losses follow an exponential distribution with mean 800. Calculate the expected payment per loss.","choices":{"A":"457","B":"464","C":"471","D":"478","E":"485"}},{"id":13,"topic":"Mixture Distributions","subtopic":"Conditional severity","question":"The quality of drivers is measured by a random variable <span class='math'>Θ</span>. This variable is uniformly distributed on <span class='math'>[0,1]</span>.<br><br>Given a driver of quality <span class='math'>Θ=θ</span>, annual claims costs for that driver have the following distribution function:<div class='formula-block math'>F(x|θ)=0, &nbsp;x≤100;<br>F(x|θ)=1−(100/x)<sup>2+θ</sup>, &nbsp;x&gt;100.</div>Calculate the expected annual claim costs for a randomly selected driver.","choices":{"A":"165","B":"167","C":"169","D":"171","E":"173"}},{"id":14,"topic":"Normal Distribution","subtopic":"Sum of independent normals","question":"<span class='math'>X</span> represents losses on an auto liability policy due to bodily injury. <span class='math'>Y</span> represents losses on an auto liability policy due to property damage. <span class='math'>X</span> and <span class='math'>Y</span> are independent and are both normally distributed with:<div class='formula-block math'>E[X]=150, &nbsp; Var(X)=5,000<br>E[Y]=50, &nbsp; Var(Y)=400</div>Calculate the probability that total losses, <span class='math'>X+Y</span>, are less than 250.","choices":{"A":"0.571","B":"0.626","C":"0.680","D":"0.716","E":"0.752"}},{"id":15,"topic":"Compound Distributions","subtopic":"Aggregate loss mode","question":"On an insurance coverage, the number of claims submitted has the following probability function:<div class='inline-table-wrap'><table class='inline-table'><tr><th>Number of claims</th><th>Probability</th></tr><tr><td>0</td><td>0.30</td></tr><tr><td>1</td><td>0.25</td></tr><tr><td>2</td><td>0.25</td></tr><tr><td>3</td><td>0.20</td></tr></table></div>The size of each claim has the following probability function:<div class='inline-table-wrap'><table class='inline-table'><tr><th>Size of claim</th><th>Probability</th></tr><tr><td>10</td><td>0.5</td></tr><tr><td>20</td><td>0.3</td></tr><tr><td>30</td><td>0.2</td></tr></table></div>Claim sizes are independent of each other and of claim counts. Calculate the mode of the sum of claims.","choices":{"A":"0","B":"10","C":"20","D":"30","E":"40"}},{"id":16,"topic":"Set Theory","subtopic":"Inclusion-exclusion","question":"Among commuters to work:<div class='formula-block'>i) 62% use a train.<br>ii) 25% use a bus.<br>iii) 18% use a car.<br>iv) 16% use a train and a bus.<br>v) 10% use a train and a car.<br>vi) 8% use a bus and a car.<br>vii) 2% use a train, a bus, and a car.</div>Calculate the proportion of commuters who do not use a train, a bus, or a car.","choices":{"A":"0.25","B":"0.27","C":"0.29","D":"0.31","E":"0.33"}},{"id":17,"topic":"Conditional Probability","subtopic":"Dice","question":"Two fair dice are tossed. Calculate the probability that the numbers of the dice are even, given that their sum is 6.","choices":{"A":"1/3","B":"2/5","C":"1/2","D":"3/5","E":"2/3"}},{"id":18,"topic":"Combinatorial Probability","subtopic":"Hypergeometric distribution","question":"In a box of 100 machine parts, 6 are defective. 5 parts are selected at random. Calculate the probability that exactly 4 selected parts are not defective.","choices":{"A":"0.05","B":"0.19","C":"0.24","D":"0.28","E":"0.31"}},{"id":19,"topic":"Multivariate Discrete Distributions","subtopic":"Marginal distribution","question":"Let <span class='math'>X</span> and <span class='math'>Y</span> be discrete random variables with joint probability function<div class='formula-block math'>p(x,y)=(x+y)/18 for (x,y)=(1,1),(1,2),(2,1),(2,4),(3,1);<br>p(x,y)=0 otherwise.</div>Determine the marginal probability function of <span class='math'>Y</span>.","choices":{"A":"pY(1)=5/18, pY(2)=1/2, pY(3)=2/9","B":"pY(1)=5/18, pY(2)=1/2, pY(4)=2/9","C":"pY(1)=1/2, pY(2)=1/6, pY(4)=1/3","D":"pY(1)=3/5, pY(2)=1/5, pY(4)=1/5","E":"pY(1)=2/3, pY(2)=1/9, pY(4)=2/9"}},{"id":20,"topic":"Bayes' Theorem","subtopic":"Diagnostic testing","question":"A blood test for a disease detects the disease if it is present with probability 0.95. If the disease is not present, the test produces a false positive for the disease with probability 0.03. 2% of a population has this disease. Calculate the probability that a randomly selected individual has the disease, given that the blood test is positive.","choices":{"A":"0.05","B":"0.39","C":"0.54","D":"0.73","E":"0.97"}},{"id":21,"topic":"Normal Approximation","subtopic":"Correlation from a percentile","question":"A customer service representative in an insurance company handles calls from clients and agents.<ul class='question-bullets'><li>Let <span class='math'>X</span> be the number of calls from agents. Mean of <span class='math'>X</span> is 10 and standard deviation of <span class='math'>X</span> is 5.</li><li>Let <span class='math'>Y</span> be the number of calls from clients. Mean of <span class='math'>Y</span> is 35 and standard deviation of <span class='math'>Y</span> is 60.</li></ul>Based on a sample of 100 days, the 67th percentile of the total number of calls from agents and clients is 47.693. Using the normal approximation, determine the approximate correlation factor between <span class='math'>X</span> and <span class='math'>Y</span>, <span class='math'>ρ<sub>XY</sub></span>.","choices":{"A":"0.1","B":"0.2","C":"0.3","D":"0.4","E":"0.5"}},{"id":22,"topic":"Combinatorial Probability","subtopic":"Hypergeometric selection","question":"An actuarial department has 8 pre-ASA students and 5 students who are ASAs. To support a project to convert reserves to a new software system, the head of the project selects 4 students randomly. Calculate the probability that at least 2 ASAs were selected.","choices":{"A":"0.39","B":"0.4","C":"0.51","D":"0.5","E":"0.63"}},{"id":23,"topic":"Normal Distribution","subtopic":"Percentiles","question":"The amount of time a battery lasts, <span class='math'>T</span>, is normally distributed. The 20th percentile of <span class='math'>T</span> is 160 and the 30th percentile is 185. Calculate the 60th percentile of <span class='math'>T</span>.","choices":{"A":"246","B":"253","C":"260","D":"267","E":"274"}},{"id":24,"topic":"Conditional Moments","subtopic":"Poisson conditioning","question":"The number of houses on a block, <span class='math'>X</span>, follows a Poisson distribution with mean 10. Given <span class='math'>X</span>, the number of trees on a block, <span class='math'>Y</span>, follows a Poisson distribution with mean <span class='math'>X</span>. Calculate <span class='math'>Cov(X,Y)</span>.","choices":{"A":"5.0","B":"10.0","C":"14.1","D":"17.3","E":"20.0"}},{"id":25,"topic":"Transformations","subtopic":"Measurement error","question":"The side of a square is measured. The true length of the side is 10. The length recorded by the measuring instrument is normally distributed with mean 10 and standard deviation 0.1. Calculate the expected area of the square based on the measurement recorded by the measuring instrument.","choices":{"A":"99.90","B":"99.99","C":"100.00","D":"100.01","E":"100.10"}},{"id":26,"topic":"Continuous Distributions","subtopic":"Conditional probability","question":"Losses on an insurance policy are modeled with a random variable with density function<div class='formula-block math'>f(x)=cx<sup>α</sup>, &nbsp;0&lt;x≤4;<br>f(x)=0 otherwise.</div>The probability that a loss is less than 2, given that it is less than 3, is 0.5227. Calculate the probability that a loss is greater than 1, given that it is less than 2.","choices":{"A":"0.64","B":"0.67","C":"0.70","D":"0.73","E":"0.76"}},{"id":27,"topic":"Continuous Distributions","subtopic":"Piecewise CDF","question":"Let <span class='math'>X</span> be a random variable with the following distribution function<div class='formula-block math'>F(x)=0 for x&lt;0;<br>F(x)=0.2 for 0≤x&lt;1;<br>F(x)=0.3 for 1≤x&lt;2;<br>F(x)=0.5+0.1x for 2≤x&lt;5;<br>F(x)=1 for x≥5.</div>Calculate <span class='math'>P[1≤X≤2]</span>.","choices":{"A":"0.1","B":"0.2","C":"0.3","D":"0.4","E":"0.5"}},{"id":28,"topic":"Multivariate Discrete Distributions","subtopic":"Joint probability function","question":"X and Y are discrete random variables with joint probability function<div class='formula-block math'>P(x,y) = {<br>&nbsp;&nbsp;(1/3)<sup>x</sup>, &nbsp; x a positive integer, and y = 0<br>&nbsp;&nbsp;(1/2)(1/3)<sup>x</sup>, &nbsp; x a positive integer, and y = 1, 2<br>&nbsp;&nbsp;0, &nbsp; otherwise<br>}</div>You are given the formula<div class='formula-block math'>∑<sub>x=1</sub><sup>∞</sup> x c<sup>x</sup> = c / (1 − c)<sup>2</sup></div>Calculate <span class='math'>E[XY]</span>.","choices":{"A":"3/8","B":"9/16","C":"3/4","D":"7/8","E":"15/16"}},{"id":29,"topic":"Basic Probability","subtopic":"Variance","question":"A pair of dice is tossed. Calculate the variance of the sum of the dice.","choices":{"A":"17/3","B":"35/6","C":"6","D":"37/6","E":"19/3"}},{"id":30,"topic":"Discrete Distributions","subtopic":"Poisson percentile","question":"The daily number of visitors to a national park follows a Poisson distribution with mean 900. Calculate the 80<sup>th</sup> percentile of the number of visitors in a day.","choices":{"A":"915","B":"920","C":"925","D":"930","E":"935"}}]}};
+const EXAM_MS = 3 * 60 * 60 * 1000;
+const MOCK_HASHES = {"1":[1686029972,1653240899,4136404568,2332556283,2812212314,1764877247,3822967431,2660310850,1808131884,3780086139,535806109,4246253477,2013843508,3860488375,2552460480,4045176200,2687950379,3762204637,2397715098,968270037,633255202,4076043532,2739495293,1322573897,3059566940,1678099811,1636100509,3477439709,490364938,2497461023]};
+const PASS_THRESHOLD = 0.70;
+const ATTEMPT_KEY = "p_practice_exam1_attempt_v1";
+const UNLOCK_KEY = "fm_mock_three_sets_unlocked_v1";
+
+const $=id=>document.getElementById(id);
+let mode="mock", selectedSetId=1, timerHandle=null, savePulse=0, pendingUnlock=null;
+let state=loadAttempt(), unlocked=loadUnlocked();
+
+function fnv1a(str){let h=2166136261;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+function currentSet(){return SETS[String(state.setId)]}
+function freshState(setId=1,m="mock"){
+  const n=SETS[String(setId)].questions.length;
+  return {started:false,mode:m,setId,name:"",startedAt:null,submittedAt:null,current:0,
+    answers:Array(n).fill(null),flags:Array(n).fill(false),qTimes:Array(n).fill(0),
+    currentEnteredAt:null,revealed:Array(n).fill(false),timedOut:false,
+    confirmation:`FM${String(setId).padStart(2,"0")}-`+Math.floor(100000+Math.random()*900000)};
+}
+function loadAttempt(){try{const r=localStorage.getItem(ATTEMPT_KEY);if(!r)return freshState();const s=JSON.parse(r);const set=SETS[String(s.setId||1)];if(!set||!Array.isArray(s.answers)||s.answers.length!==set.questions.length)return freshState();if(!Array.isArray(s.flags))s.flags=Array(set.questions.length).fill(false);if(!Array.isArray(s.qTimes))s.qTimes=Array(set.questions.length).fill(0);if(!Array.isArray(s.revealed))s.revealed=Array(set.questions.length).fill(false);return Object.assign(freshState(s.setId,s.mode||"mock"),s)}catch(e){return freshState()}}
+function saveAttempt(){try{localStorage.setItem(ATTEMPT_KEY,JSON.stringify(state))}catch(e){}}
+function loadUnlocked(){try{const a=JSON.parse(localStorage.getItem(UNLOCK_KEY)||"[]");return new Set(Array.isArray(a)?a.map(Number):[])}catch(e){return new Set()}}
+function saveUnlocked(){try{localStorage.setItem(UNLOCK_KEY,JSON.stringify([...unlocked]))}catch(e){}}
+function fmt(ms){ms=Math.max(0,Math.floor(ms));const t=Math.floor(ms/1000),h=Math.floor(t/3600),m=Math.floor((t%3600)/60),s=t%60;return [h,m,s].map(n=>String(n).padStart(2,"0")).join(":")}
+function deadline(){return state.startedAt?state.startedAt+EXAM_MS:null}
+function remaining(){if(!state.startedAt)return EXAM_MS;const end=state.submittedAt||Date.now();return Math.max(0,EXAM_MS-(end-state.startedAt))}
+function liveQTime(i){let t=state.qTimes[i]||0;if(state.mode==="mock"&&!state.submittedAt&&state.currentEnteredAt&&i===state.current){t+=Math.max(0,Math.min(Date.now(),deadline())-state.currentEnteredAt)}return t}
+function accrue(){if(state.mode!=="mock"||state.submittedAt||!state.currentEnteredAt)return;const now=Math.min(Date.now(),deadline());state.qTimes[state.current]+=Math.max(0,now-state.currentEnteredAt);state.currentEnteredAt=now}
+function showOnly(which){$("startScreen").classList.toggle("hidden",which!=="start");$("workScreen").classList.toggle("hidden",which!=="work");$("resultScreen").classList.toggle("hidden",which!=="result")}
+
+function renderLanding(){
+  mode="mock"; selectedSetId=1; showOnly("start");
+  $("facts").innerHTML=`<div class="fact"><b>30</b><span>questions</span></div><div class="fact"><b>3:00:00</b><span>timer</span></div><div class="fact"><b>70%</b><span>practice pass threshold</span></div><div class="fact"><b>PDF</b><span>attempt report</span></div>`;
+  $("landingNote").innerHTML=`No answer key, score, or solutions are shown during or after the assessment. The final page gives only the preliminary result, and the PDF records the student's selected answers and timing.`;
+  $("startBtn").textContent="Begin Practice Exam 1 →";
+}
+function renderSetCards(){}
+function chooseSet(id){selectedSetId=1}
+function tryUnlock(){
+  const key=$("passInput").value.trim();
+  if(!pendingUnlock||fnv1a(`FMLOCK|${pendingUnlock}|${key}`)!==PASS_HASHES[String(pendingUnlock)]){$("passError").textContent="That passkey is not correct.";$("passInput").select();return}
+  unlocked.add(pendingUnlock);saveUnlocked();selectedSetId=pendingUnlock;pendingUnlock=null;$("passModal").classList.add("hidden");renderSetCards()
+}
+function startSession(){
+  const name=$("studentName").value.trim();if(!name){$("nameError").textContent="Please enter the student's name first.";$("studentName").focus();return}
+  $("nameError").textContent="";state=freshState(selectedSetId,mode);state.name=name;state.started=true;state.startedAt=Date.now();if(mode==="mock")state.currentEnteredAt=Date.now();saveAttempt();renderWork()
+}
+
+function renderWork(){
+  showOnly("work");const s=currentSet();
+  $("topTitle").textContent=`${s.label} · Timed Assessment`;
+  $("candidateLabel").textContent=`${state.name} · ${s.name}`;
+  $("timerBox").classList.toggle("hidden",state.mode!=="mock");$("studyChip").classList.toggle("hidden",state.mode!=="practice");$("qtimeBox").classList.toggle("hidden",state.mode!=="mock");
+  $("revealBtn").classList.toggle("hidden",state.mode!=="practice");
+  $("flagBtn").classList.toggle("hidden",state.mode!=="mock");
+  $("progressName").textContent="Answered";
+  $("legend").innerHTML=state.mode==="mock"
+    ? `<div class="legend-row"><span class="legend-chip answered"></span> Answered</div><div class="legend-row"><span class="legend-chip"></span> Unanswered</div>`
+    : `<div class="legend-row"><span class="legend-chip answered"></span> Answer selected</div><div class="legend-row"><span class="legend-chip revealed"></span> Solution revealed</div>`;
+  $("sideTip").textContent=state.mode==="mock"?"Time spent on each question is added across every visit.":"Try the question first. Reveal only when you are ready; the animated explanation appears only after reveal.";
+  renderPalette();renderQuestion();if(state.mode==="mock")startTimer()
+}
+function renderPalette(){
+  const s=currentSet(),p=$("palette");p.innerHTML="";
+  s.questions.forEach((q,i)=>{const b=document.createElement("button");b.className="qdot";b.textContent=q.id;if(i===state.current)b.classList.add("current");if(state.answers[i])b.classList.add("answered");if(state.mode==="practice"&&state.revealed[i])b.classList.add("revealed");if(state.flags[i])b.classList.add("flagged");b.onclick=()=>goTo(i);p.appendChild(b)});
+  const count=state.mode==="mock"?state.answers.filter(Boolean).length:state.revealed.filter(Boolean).length;
+  $("progressLabel").textContent=`${count} / ${s.questions.length}`;$("progressFill").style.width=`${count/s.questions.length*100}%`;
+}
+function renderQuestion(){
+  const s=currentSet(),q=s.questions[state.current],revealed=state.mode==="practice"&&state.revealed[state.current];
+  $("qCount").textContent=`Question ${q.id} of ${s.questions.length}`;$("topicTag").textContent=q.topic;$("subtopicTag").textContent=q.subtopic;$("questionText").innerHTML=q.question;
+  const card=$("questionText").parentElement; const iw=card.querySelector(".question-image-wrap"); if(iw) iw.remove();
+  const wrap=$("choices");wrap.innerHTML="";
+  Object.entries(q.choices).forEach(([letter,val])=>{
+    const b=document.createElement("button");b.className="choice";
+    if(state.answers[state.current]===letter)b.classList.add("selected");
+    if(revealed&&letter===q.correct)b.classList.add("correct");
+    if(revealed&&state.answers[state.current]===letter&&letter!==q.correct)b.classList.add("wrong");
+    b.disabled=revealed;
+    b.innerHTML=`<span class="letter">${letter}</span><span class="choice-text">${val}</span>`;
+    b.onclick=()=>{if(revealed)return;state.answers[state.current]=letter;saveAttempt();renderQuestion();renderPalette()};
+    wrap.appendChild(b);
+  });
+  $("prevBtn").disabled=state.current===0;$("prevBtn").style.opacity=state.current===0?".45":"1";
+  $("flagBtn").classList.toggle("active",!!state.flags[state.current]);$("flagBtn").textContent=state.flags[state.current]?"★ Flagged":"☆ Flag";
+  $("nextBtn").textContent=state.current===s.questions.length-1?(state.mode==="practice"?"Finish practice →":"Review & end →"):"Next →";
+  if(state.mode==="mock")$("qTimer").textContent=fmt(liveQTime(state.current));
+  if(state.mode==="practice"){
+    $("revealBtn").disabled=revealed;$("revealBtn").textContent=revealed?"Answer revealed ✓":"Reveal answer & solution ✦";
+    if(revealed)renderSolution(q);else $("solutionPanel").classList.add("hidden");
+  }else $("solutionPanel").classList.add("hidden");
+}
+function goTo(i){const s=currentSet();if(i<0||i>=s.questions.length||i===state.current)return;accrue();state.current=i;if(state.mode==="mock")state.currentEnteredAt=Date.now();saveAttempt();renderQuestion();renderPalette();window.scrollTo({top:0,behavior:"smooth"})}
+
+function revealCurrent(){
+  if(state.mode!=="practice")return;
+  state.revealed[state.current]=true;saveAttempt();renderQuestion();renderPalette();
+  setTimeout(()=>$("solutionPanel").scrollIntoView({behavior:"smooth",block:"start"}),80)
+}
+function renderSolution(q){
+  const ans=state.answers[state.current],correct=ans===q.correct;
+  const p=$("solutionPanel");p.classList.remove("hidden");
+  const steps=q.steps.map((st,i)=>`<div class="step"><div class="step-num">${i+1}</div><div><h4>${esc(st.title)}</h4>${st.math?`<div class="mathline">${esc(st.math)}</div>`:""}<p>${esc(st.explain)}</p></div></div>`).join("");
+  p.innerHTML=`<div class="solution-head"><div><div class="solution-title">Step-by-step solution</div><div style="font-size:12px;color:var(--muted);margin-top:3px">${ans?correct?"Nice — your answer is correct.":"Your answer is different from the keyed answer.":"You revealed this without selecting an answer."}</div></div><div class="answer-badge ${ans&&!correct?"bad":""}">Answer ${q.correct} · ${esc(q.correctValue)}</div></div>
+    <div class="formula-guide"><b>Core idea / formula guide</b><p>${esc(q.formulaGuide)}</p></div>
+    <div class="visual-box">${visualSVG(q)}</div>
+    <div class="steps">${steps}</div>
+    <div class="trap"><b>Common trap:</b> ${esc(q.trap)}</div>`;
+}
+function visualSVG(q){
+  const topic = (q.topic||"").toLowerCase();
+  const sub = (q.subtopic||"").toLowerCase();
+  const text = ((q.question||"")+" "+(q.subtopic||"")).toLowerCase();
+  const common=`viewBox="0 0 760 230" fill="none" xmlns="http://www.w3.org/2000/svg"`;
+  const wrap=(title,tag,svg,caption)=>`<div class="visual-titlebar"><b>${title}</b><span>${tag}</span></div><div class="visual-canvas"><svg ${common}>${svg}</svg></div><div class="visual-caption">${caption}</div>`;
+  const baseAxis=(ticks=[])=>`<line x1="66" y1="174" x2="694" y2="174" stroke="#98A4B4" stroke-width="2"/><path d="M694 174l-12-7v14z" fill="#98A4B4"/>${ticks.map(t=>`<line x1="${t.x}" y1="166" x2="${t.x}" y2="182" stroke="#98A4B4" stroke-width="2"/><text x="${t.x}" y="202" text-anchor="middle" fill="#718096" font-size="12">${t.label}</text>`).join("")}`;
+  const up=(x,y,h,label,cls="pop",color="#6F9B7B",txt="#55735E")=>`<line class="${cls}" x1="${x}" y1="${y}" x2="${x}" y2="${y-h}" stroke="${color}" stroke-width="5" stroke-linecap="round"/><path class="${cls}" d="M${x-7} ${y-h+9}L${x} ${y-h}L${x+7} ${y-h+9}" stroke="${color}" stroke-width="4" fill="none"/><text class="${cls}" x="${x}" y="${y-h-9}" text-anchor="middle" fill="${txt}" font-size="11" font-weight="700">${label}</text>`;
+  const down=(x,y,h,label,cls="pop",color="#AD6972",txt="#96555F")=>`<line class="${cls}" x1="${x}" y1="${y}" x2="${x}" y2="${y+h}" stroke="${color}" stroke-width="5" stroke-linecap="round"/><path class="${cls}" d="M${x-7} ${y+h-9}L${x} ${y+h}L${x+7} ${y+h-9}" stroke="${color}" stroke-width="4" fill="none"/><text class="${cls}" x="${x}" y="${y+h+18}" text-anchor="middle" fill="${txt}" font-size="11" font-weight="700">${label}</text>`;
+
+  // Interest theory and general cash flows
+  if (topic.includes('interest theory') || topic.includes('general cash flows')) {
+    if (sub.includes('treasury bill') || text.includes('bank discount')) {
+      const svg=`<rect class="pop" x="92" y="62" width="180" height="92" rx="18" fill="#E7EEFC" stroke="#7D98BD"/>
+        <text x="182" y="92" text-anchor="middle" fill="#44536B" font-size="13" font-weight="800">Purchase price</text>
+        <text x="182" y="122" text-anchor="middle" fill="#526B94" font-size="24" font-weight="900">P = F(1-dt)</text>
+        <path class="draw" d="M287 108 L470 108" stroke="#5876A4" stroke-width="5"/><path d="M470 108l-16-10v20z" fill="#5876A4"/>
+        <rect class="pop pop2" x="490" y="62" width="180" height="92" rx="18" fill="#DFEEE2" stroke="#6F9B7B"/>
+        <text x="580" y="92" text-anchor="middle" fill="#44536B" font-size="13" font-weight="800">Face amount</text>
+        <text x="580" y="122" text-anchor="middle" fill="#55735E" font-size="24" font-weight="900">F</text>
+        <text x="380" y="88" text-anchor="middle" fill="#6F7A8E" font-size="11">180 days on 360-day discount basis</text>
+        <text x="380" y="142" text-anchor="middle" fill="#96555F" font-size="11">then convert return on price into an effective annual yield</text>`;
+      return wrap('Treasury bill quoted on a bank-discount basis','discount convention',svg,'This question has two stages: first get the purchase price from the bank-discount quote, then compute the investment yield earned on the price actually paid.');
+    }
+    if (sub.includes('money-weighted') || sub==='irr') {
+      const svg=`${baseAxis([{x:95,label:'0'},{x:300,label:'0.40'},{x:470,label:'0.75'},{x:650,label:'1'}])}
+        ${up(95,174,58,'begin','pop')}${up(300,174,42,'deposit','pop pop2')}${down(470,174,38,'withdrawal','pop pop3')}${up(650,174,78,'ending value','pop pop4')}
+        <path class="dashMove" d="M112 123 C250 76 480 76 628 94" stroke="#5876A4" stroke-width="3" fill="none"/>
+        <text x="380" y="62" text-anchor="middle" fill="#526B94" font-size="12" font-weight="700">solve one rate that balances the exact-timing timeline</text>`;
+      return wrap(sub==='irr'?'Internal rate of return comes from an equation of value':'Money-weighted return uses actual contribution timing','exact timing',svg,'Each cash flow grows for a different amount of time. Write every contribution and withdrawal on the timeline, then solve the single rate that makes the ending value work.');
+    }
+    if (sub.includes('equation of value') || sub.includes('withdrawals under piecewise interest')) {
+      const svg=`${baseAxis([{x:90,label:'0'},{x:220,label:'1'},{x:345,label:'3'},{x:470,label:'5'},{x:620,label:'8'}])}
+        ${up(220,174,42,'1,000','pop')}${up(405,174,54,'1,500','pop pop2')}${up(520,174,48,'X','pop pop3','#5876A4','#526B94')}
+        <rect class="fadeIn" x="98" y="42" width="240" height="34" rx="12" fill="#E7EEFC"/><text x="218" y="63" text-anchor="middle" fill="#526B94" font-size="11" font-weight="800">first rate regime</text>
+        <rect class="fadeIn fade2" x="345" y="42" width="220" height="34" rx="12" fill="#DFEEE2"/><text x="455" y="63" text-anchor="middle" fill="#55735E" font-size="11" font-weight="800">second rate regime</text>
+        <path class="dashMove" d="M223 126 C300 92 440 82 617 84" stroke="#5876A4" stroke-width="3" fill="none"/>
+        <circle class="pop pop4 pulse" cx="620" cy="84" r="12" fill="#FFF3CF" stroke="#C8A95A" stroke-width="3"/>
+        <text x="620" y="55" text-anchor="middle" fill="#7D6A35" font-size="11" font-weight="800">focal date</text>`;
+      return wrap('Move every cash flow to the same focal date','equation of value',svg,'The picture highlights the main FM habit: mark the changing rate regime, place each cash flow at its exact time, and accumulate or discount everything to one common date before solving.');
+    }
+    if (sub.includes('varying force') || sub.includes('unknown force coefficient') || sub.includes('piecewise accumulation') || sub.includes('nominal discount') || sub.includes('unknown final rate')) {
+      const svg=`${baseAxis([{x:95,label:'0'},{x:255,label:'2'},{x:415,label:'4'},{x:635,label:'end'}])}
+        <path class="draw" d="M95 132 C190 122 260 109 345 92 C450 72 540 60 635 45" stroke="#5876A4" stroke-width="5" stroke-linecap="round" fill="none"/>
+        <circle class="pop" cx="95" cy="132" r="10" fill="#DDE8F7" stroke="#5876A4" stroke-width="3"/>
+        <circle class="pop pop2" cx="255" cy="110" r="10" fill="#DDE8F7" stroke="#5876A4" stroke-width="3"/>
+        <circle class="pop pop3" cx="415" cy="79" r="10" fill="#DDE8F7" stroke="#5876A4" stroke-width="3"/>
+        <circle class="pop pop4 pulse" cx="635" cy="45" r="12" fill="#DFEEE2" stroke="#6F9B7B" stroke-width="3"/>
+        <rect class="fadeIn" x="92" y="42" width="170" height="32" rx="12" fill="#E7EEFC"/><text x="177" y="62" text-anchor="middle" fill="#526B94" font-size="11" font-weight="800">first accumulation rule</text>
+        <rect class="fadeIn fade2" x="270" y="42" width="160" height="32" rx="12" fill="#FFF3CF"/><text x="350" y="62" text-anchor="middle" fill="#7D6A35" font-size="11" font-weight="800">second rule</text>
+        <rect class="fadeIn fade3" x="438" y="42" width="150" height="32" rx="12" fill="#DFEEE2"/><text x="513" y="62" text-anchor="middle" fill="#55735E" font-size="11" font-weight="800">solve last unknown</text>`;
+      return wrap('Follow the accumulation path through each rate regime','accumulation map',svg,'Even when the interest rule changes, the fund value simply keeps moving along the timeline. Break the problem into stages and multiply the stage-by-stage accumulation factors.');
+    }
+    const svg=`${baseAxis([{x:90,label:'0'},{x:250,label:'1'},{x:410,label:'2'},{x:620,label:'focal'}])}
+      ${up(250,174,40,'CF₁','pop')}${up(410,174,54,'CF₂','pop pop2')}
+      <path class="dashMove" d="M252 129 C355 87 470 84 618 95" stroke="#5876A4" stroke-width="3" fill="none"/>
+      <circle class="pop pop4 pulse" cx="620" cy="95" r="12" fill="#DFEEE2" stroke="#6F9B7B" stroke-width="3"/>
+      <text x="410" y="60" text-anchor="middle" fill="#526B94" font-size="11">move everything to one date, then compare</text>`;
+    return wrap('Cash-flow timeline first, formula second','timeline habit',svg,'This fallback timeline is used only for generic time-value questions. The key is still to place the cash flows first and choose the focal date second.');
+  }
+
+  // Annuities
+  if (topic.includes('annuities')) {
+    if (sub.includes('continuous')) {
+      const svg=`${baseAxis([{x:92,label:'start'},{x:360,label:'time'},{x:660,label:'end'}])}
+        <path class="draw" d="M92 143 C182 138 263 129 348 111 C447 90 550 69 660 44" stroke="#6F9B7B" stroke-width="5" fill="none"/>
+        <path class="fadeIn fade2" d="M92 174 L92 143 C182 138 263 129 348 111 C447 90 550 69 660 44 L660 174 Z" fill="#DFEEE2" opacity=".55"/>
+        <path class="dashMove" d="M112 152 C250 95 450 94 640 69" stroke="#5876A4" stroke-width="3" fill="none"/>
+        <text x="208" y="119" fill="#55735E" font-size="11">payment-rate function</text>
+        <text x="500" y="106" fill="#526B94" font-size="11">discount each tiny slice</text>`;
+      return wrap('Continuous annuity = a discounted payment-rate curve','integral view',svg,'Instead of separate arrows, imagine a whole stream of tiny payments. The present value is found by integrating the discounted payment-rate over the payment interval.');
+    }
+    if (sub.includes('perpetuity')) {
+      const growing = sub.includes('growing');
+      const increasing = sub.includes('increasing');
+      const labels = growing ? ['P','P(1+g)','P(1+g)²','...'] : increasing ? ['P','P+d','P+2d','...'] : ['P','P','P','...'];
+      const heights = growing ? [36,47,60,72] : increasing ? [34,46,58,70] : [46,46,46,46];
+      const xs=[250,360,470,580];
+      const svg=`${baseAxis([{x:90,label:'0'},{x:210,label:'defer'},{x:250,label:'1st'},{x:580,label:'...'}])}
+        <rect class="fadeIn" x="105" y="54" width="120" height="46" rx="14" fill="#E7EEFC"/><text x="165" y="73" text-anchor="middle" fill="#44536B" font-size="11" font-weight="800">deferred period</text><text x="165" y="90" text-anchor="middle" fill="#526B94" font-size="10">value after deferral first</text>
+        ${xs.map((x,i)=>up(x,174,heights[i],labels[i],`pop pop${Math.min(i+1,4)}`)).join('')}
+        <path class="dashMove" d="M575 102 C624 84 650 84 688 104" stroke="#5876A4" stroke-width="3" fill="none"/>`;
+      return wrap(growing?'Deferred growing perpetuity':'Deferred increasing perpetuity','infinite stream',svg,'The visual emphasizes the right focal date: first value the perpetuity one payment period before the first payment, then discount that entire value back across the deferral period.');
+    }
+    if (sub.includes('geometric')) {
+      const xs=[150,260,370,480,590], hs=[32,42,54,68,86];
+      const svg=`${baseAxis([{x:88,label:'0'},{x:150,label:'1'},{x:260,label:'2'},{x:370,label:'3'},{x:590,label:'n'}])}
+        ${xs.map((x,i)=>up(x,174,hs[i],i===0?'P':i===1?'P(1+g)':'',`pop pop${Math.min(i+1,4)}`)).join('')}
+        <path class="dashMove" d="M150 136 C280 58 420 52 590 88" stroke="#5876A4" stroke-width="3" fill="none"/>
+        <text x="380" y="50" text-anchor="middle" fill="#526B94" font-size="11">payments grow geometrically while discounting also changes by period</text>`;
+      return wrap('Geometric annuity: payment growth pattern matters','growing stream',svg,'Write the first payment and the common growth rule clearly. That prevents mixing up the annuity growth rate with the interest rate used for discounting.');
+    }
+    if (sub.includes('arithmetic') || sub.includes('increasing') || sub.includes('step') || sub.includes('non-level') || sub.includes('skipped')) {
+      const xs=[150,255,360,465,570], hs=sub.includes('skipped')?[40,52,64,0,76]:[34,46,58,70,82];
+      const labels=sub.includes('skipped')?['1,000','1,000','1,000','skip','resume']:['P','P+d','P+2d','P+3d','...'];
+      const bars=xs.map((x,i)=>hs[i]===0?`<text class="pop pop${Math.min(i+1,4)}" x="${x}" y="132" text-anchor="middle" fill="#96555F" font-size="12" font-weight="800">skip</text>`:up(x,174,hs[i],labels[i],`pop pop${Math.min(i+1,4)}`)).join('');
+      const svg=`${baseAxis([{x:88,label:'0'},{x:150,label:'1'},{x:255,label:'2'},{x:360,label:'3'},{x:570,label:'later'}])}${bars}
+        <text x="382" y="56" text-anchor="middle" fill="#526B94" font-size="11">this stream is easiest to split into simpler pieces</text>`;
+      return wrap(sub.includes('skipped')?'A skipped payment breaks the annuity into earlier and later pieces':'Arithmetic / step annuity: see the pattern before choosing the formula','payment pattern',svg,'The picture is intentionally structural: it helps the student see whether the cash-flow stream should be treated as a level annuity, an increasing annuity, or two separate blocks.');
+    }
+    const svg=`${baseAxis([{x:88,label:'0'},{x:180,label:'1'},{x:290,label:'2'},{x:400,label:'3'},{x:620,label:'n'}])}
+      ${[180,290,400,510,620].map((x,i)=>up(x,174,54,'P',`pop pop${Math.min(i+1,4)}`)).join('')}
+      <path class="dashMove" d="M620 84 C500 42 280 42 120 118" stroke="#5876A4" stroke-width="3" fill="none"/>
+      <text x="382" y="44" text-anchor="middle" fill="#526B94" font-size="11">discount every payment to the same focal date</text>`;
+    return wrap('Level annuity: equal payments on a regular schedule','standard annuity',svg,'Use this diagram for standard annuity-immediate or annuity-due style questions. The critical step is identifying when the first payment occurs and how often the stream repeats.');
+  }
+
+  // Loans
+  if (topic.includes('loans')) {
+    if (sub.includes('sinking fund')) {
+      const svg=`<rect class="pop" x="70" y="48" width="180" height="66" rx="17" fill="#F8E8EA" stroke="#C9828D"/>
+        <text x="160" y="75" text-anchor="middle" fill="#96555F" font-size="12" font-weight="800">Lender</text><text x="160" y="95" text-anchor="middle" fill="#96555F" font-size="11">interest only</text>
+        <rect class="pop pop2" x="510" y="48" width="180" height="66" rx="17" fill="#DFEEE2" stroke="#6F9B7B"/>
+        <text x="600" y="75" text-anchor="middle" fill="#55735E" font-size="12" font-weight="800">Sinking fund</text><text x="600" y="95" text-anchor="middle" fill="#55735E" font-size="11">deposits accumulate</text>
+        <circle class="pop pop3 pulse" cx="380" cy="158" r="44" fill="#E7EEFC" stroke="#5876A4" stroke-width="3"/><text x="380" y="154" text-anchor="middle" fill="#44536B" font-size="11" font-weight="800">Principal</text><text x="380" y="172" text-anchor="middle" fill="#526B94" font-size="13">repaid at end</text>
+        <path class="draw" d="M255 82 C320 45 350 70 360 116" stroke="#AD6972" stroke-width="4" fill="none"/><path class="draw" d="M505 82 C440 45 410 70 400 116" stroke="#6F9B7B" stroke-width="4" fill="none"/>`;
+      return wrap('Sinking-fund loan has two different cash-flow systems','loan + fund',svg,'This is not an amortizing loan. One stream pays interest to the lender; a separate fund builds up enough money to repay the entire principal at maturity.');
+    }
+    if (sub.includes('level principal') || sub.includes('refinancing after level principal')) {
+      const svg=`${baseAxis([{x:88,label:'0'},{x:225,label:'1'},{x:360,label:'2'},{x:495,label:'3'},{x:630,label:'...'}])}
+        <path class="draw" d="M88 65 L225 88 L360 111 L495 134 L630 157" stroke="#5876A4" stroke-width="5" fill="none"/>
+        <text x="182" y="60" fill="#526B94" font-size="11">outstanding balance falls roughly linearly</text>
+        ${down(225,88,32,'principal + interest','pop')}${down(360,111,28,'payment','pop pop2')}${down(495,134,24,'payment','pop pop3')}
+        <text x="390" y="208" text-anchor="middle" fill="#96555F" font-size="11">same principal each period, shrinking interest each period</text>`;
+      return wrap('Level-principal repayment: constant principal, declining total payment','payment structure',svg,'This structure is different from a level-payment mortgage. The balance falls by the same principal amount each period, so the interest charge and total payment both decline over time.');
+    }
+    if (sub.includes('balloon')) {
+      const svg=`${baseAxis([{x:86,label:'0'},{x:200,label:'1'},{x:315,label:'2'},{x:430,label:'3'},{x:655,label:'10'}])}
+        ${[200,315,430,545].map((x,i)=>down(x,174,38,'level payment',`pop pop${Math.min(i+1,4)}`)).join('')}
+        ${down(655,174,82,'last payment + balloon','pop pop4','#AD6972','#96555F')}
+        <path class="fadeIn" d="M655 92 L655 43" stroke="#C8A95A" stroke-width="4"/><text x="655" y="35" text-anchor="middle" fill="#7D6A35" font-size="11" font-weight="800">large final amount</text>`;
+      return wrap('Balloon loan = ordinary stream plus a large final payment','balloon structure',svg,'The balloon is a separate last cash flow. Price the level-payment annuity first, then add the discounted balloon amount at the end.');
+    }
+    if (sub.includes('interest-only then amortizing')) {
+      const svg=`${baseAxis([{x:88,label:'0'},{x:220,label:'1'},{x:330,label:'2'},{x:440,label:'3'},{x:655,label:'amortizing years'}])}
+        ${[220,330,440].map((x,i)=>down(x,174,34,'interest only',`pop pop${Math.min(i+1,4)}`)).join('')}
+        ${[545,610,675].map((x,i)=>down(x,174,58,'level payment',`pop pop${Math.min(i+1,4)}`)).join('')}
+        <rect class="fadeIn" x="470" y="42" width="180" height="34" rx="12" fill="#DFEEE2"/><text x="560" y="63" text-anchor="middle" fill="#55735E" font-size="11" font-weight="800">balance starts amortizing here</text>`;
+      return wrap('Interest-only period first, amortization period second','two-stage loan',svg,'After the interest-only stage, the principal is still fully outstanding. That full balance becomes the amount amortized over the remaining level-payment period.');
+    }
+    if (sub.includes('mortgage balance') || sub.includes('outstanding balance') || sub.includes('extra payment') || sub.includes('recast') || sub.includes('missed payment')) {
+      const special = sub.includes('missed') ? 'missed payment' : sub.includes('extra') ? 'extra payment' : 'valuation date';
+      const svg=`<line class="draw" x1="78" y1="62" x2="670" y2="152" stroke="#5876A4" stroke-width="5" stroke-linecap="round"/>
+        <path class="fadeIn fade2" d="M78 62 C220 74 330 112 450 124 C545 134 610 143 670 152" stroke="#6F9B7B" stroke-width="4" fill="none"/>
+        <line x1="78" y1="174" x2="690" y2="174" stroke="#98A4B4" stroke-width="2"/>
+        <circle class="pop pop2 pulse" cx="390" cy="111" r="12" fill="#F8E8EA" stroke="#AD6972" stroke-width="3"/>
+        <path class="dashMove" d="M390 152 L390 120" stroke="#AD6972" stroke-width="3"/>
+        <text x="390" y="205" text-anchor="middle" fill="#718096" font-size="11">${special}</text>
+        <text x="182" y="42" fill="#526B94" font-size="11">old balance path</text>
+        <text x="525" y="114" fill="#55735E" font-size="11">recalculate from the adjusted balance</text>`;
+      return wrap('Outstanding balance is found at a particular event date','prospective balance',svg,'Whether the event is a valuation date, a missed payment, or an extra payment, the same habit applies: find the balance at that exact time, adjust it for the event, then value only the remaining schedule.');
+    }
+    if (sub.includes('yield to lender') || sub.includes('fee')) {
+      const svg=`${baseAxis([{x:88,label:'issue'},{x:220,label:'1'},{x:340,label:'2'},{x:460,label:'3'},{x:650,label:'10'}])}
+        <rect class="pop" x="82" y="54" width="170" height="44" rx="12" fill="#E7EEFC"/><text x="167" y="80" text-anchor="middle" fill="#44536B" font-size="12" font-weight="800">net advance to borrower</text>
+        <text x="120" y="132" fill="#96555F" font-size="11" font-weight="800">lender also receives fee at issue</text>
+        ${[220,340,460,580,650].map((x,i)=>up(x,174,46,'payment',`pop pop${Math.min(i+1,4)}`)).join('')}
+        <path class="dashMove" d="M168 111 C300 65 480 65 640 109" stroke="#5876A4" stroke-width="3" fill="none"/>`;
+      return wrap('Yield to lender is based on the lender\'s actual net outflow','lender perspective',svg,'Origination fees change the lender’s effective initial investment. The correct yield equates the lender’s net outflow at issue to the future payment stream received from the borrower.');
+    }
+    const svg=`${baseAxis([{x:88,label:'0'},{x:210,label:'1'},{x:332,label:'2'},{x:455,label:'3'},{x:650,label:'n'}])}
+      ${[210,332,455,578,650].map((x,i)=>down(x,174,48,'payment',`pop pop${Math.min(i+1,4)}`)).join('')}
+      <path class="draw" d="M88 72 L650 152" stroke="#5876A4" stroke-width="5" fill="none"/><text x="360" y="50" text-anchor="middle" fill="#526B94" font-size="11">track the balance or payment stream along the whole term</text>`;
+    return wrap('Loan questions are timeline questions in disguise','loan cash flows',svg,'If the specific loan structure is not one of the special cases above, the safest setup is still a complete payment timeline with the focal date clearly marked.');
+  }
+
+  // Bonds
+  if (topic.includes('bonds')) {
+    if (sub.includes('callable')) {
+      const svg=`${baseAxis([{x:82,label:'0'},{x:250,label:'first call'},{x:390,label:'later call'},{x:650,label:'maturity'}])}
+        ${[140,205,270,335,400,465,530,595].map((x,i)=>up(x,174,28,'coupon',`pop pop${Math.min(i+1,4)}`)).join('')}
+        <rect class="pop pop2" x="222" y="43" width="80" height="47" rx="12" fill="#F8E8EA" stroke="#AD6972"/><text x="262" y="63" text-anchor="middle" fill="#96555F" font-size="10" font-weight="800">call price</text><text x="262" y="80" text-anchor="middle" fill="#96555F" font-size="13">K₁</text>
+        <rect class="pop pop3" x="355" y="43" width="80" height="47" rx="12" fill="#FFF3CF" stroke="#C8A95A"/><text x="395" y="63" text-anchor="middle" fill="#7D6A35" font-size="10" font-weight="800">call price</text><text x="395" y="80" text-anchor="middle" fill="#7D6A35" font-size="13">K₂</text>
+        <rect class="pop pop4" x="615" y="43" width="72" height="47" rx="12" fill="#E7EEFC" stroke="#5876A4"/><text x="651" y="71" text-anchor="middle" fill="#526B94" font-size="12" font-weight="800">Face</text>`;
+      return wrap('Callable bond: test each redemption scenario separately','yield to worst',svg,'The issuer controls the call decision, not the investor. Price or yield each possible call/maturity path, then use the least favorable investor outcome required by the question.');
+    }
+    if (sub.includes('book value')) {
+      const svg=`<path class="draw" d="M85 145 C205 138 315 122 420 99 C515 79 590 58 674 44" stroke="#5876A4" stroke-width="5" fill="none"/>
+        <line x1="85" y1="174" x2="690" y2="174" stroke="#98A4B4" stroke-width="2"/>
+        <circle class="pop pop3 pulse" cx="420" cy="99" r="12" fill="#DFEEE2" stroke="#6F9B7B" stroke-width="3"/>
+        <path class="dashMove" d="M420 158 L420 112" stroke="#6F9B7B" stroke-width="3"/>
+        <text x="420" y="205" text-anchor="middle" fill="#718096" font-size="11">immediately after coupon date</text>
+        <text x="190" y="118" fill="#526B94" font-size="11">book value evolves under the purchase yield</text>
+        <rect class="pop pop4" x="520" y="84" width="120" height="42" rx="12" fill="#F8E8EA"/><text x="580" y="109" text-anchor="middle" fill="#96555F" font-size="11">sale price − book value</text>`;
+      return wrap('Book value is a yield-based value at a particular date','post-coupon valuation',svg,'When the problem says “immediately after the kth coupon,” that coupon is already gone. The book value is the present value of only the remaining coupons and redemption amount, measured using the original purchase yield.');
+    }
+    if (sub.includes('spot-rate')) {
+      const svg=`${baseAxis([{x:82,label:'1'},{x:200,label:'2'},{x:320,label:'3'},{x:440,label:'4'},{x:650,label:'5'}])}
+        ${[82,200,320,440].map((x,i)=>up(x,174,32,'coupon',`pop pop${Math.min(i+1,4)}`)).join('')}
+        ${up(650,174,86,'coupon + redemption','pop pop4')}
+        <path class="dashMove" d="M82 130 C150 92 205 92 200 130 M200 130 C270 84 325 84 320 130 M320 130 C390 76 445 76 440 130 M440 130 C540 66 620 66 650 88" stroke="#5876A4" stroke-width="3" fill="none"/>
+        <text x="390" y="52" text-anchor="middle" fill="#526B94" font-size="11">each cash flow uses its own spot discount factor</text>`;
+      return wrap('Spot-rate bond pricing discounts each payment separately','term structure pricing',svg,'Unlike a flat-yield problem, a spot-curve problem does not use one common discount rate. Each coupon date has its own discount factor.');
+    }
+    if (sub.includes('realized yield')) {
+      const svg=`${baseAxis([{x:82,label:'buy'},{x:220,label:'1'},{x:360,label:'3'},{x:520,label:'5'}])}
+        ${[220,290,360,430,500].map((x,i)=>up(x,174,30,'coupon',`pop pop${Math.min(i+1,4)}`)).join('')}
+        <path class="draw" d="M220 140 C310 82 420 82 520 109" stroke="#6F9B7B" stroke-width="4" fill="none"/>
+        <rect class="pop pop3" x="535" y="82" width="120" height="46" rx="12" fill="#E7EEFC"/><text x="595" y="101" text-anchor="middle" fill="#44536B" font-size="10" font-weight="800">sale price</text><text x="595" y="118" text-anchor="middle" fill="#526B94" font-size="11">plus accumulated coupons</text>
+        <text x="390" y="57" text-anchor="middle" fill="#55735E" font-size="11">reinvest coupons to the sale date first</text>`;
+      return wrap('Realized yield is based on the total value at the sale date','reinvestment picture',svg,'For realized yield, coupons are not left at their payment dates. They are first accumulated to the sale date, then combined with the sale price of the bond.');
+    }
+    const svg=`${baseAxis([{x:82,label:'1'},{x:205,label:'2'},{x:328,label:'3'},{x:451,label:'4'},{x:650,label:'maturity'}])}
+      ${[82,205,328,451].map((x,i)=>up(x,174,32,'coupon',`pop pop${Math.min(i+1,4)}`)).join('')}
+      ${up(650,174,84,'coupon + redemption','pop pop4')}
+      <text x="390" y="52" text-anchor="middle" fill="#526B94" font-size="11">bond value = PV of coupons + PV of redemption amount</text>`;
+    return wrap('Standard bond pricing separates coupons and redemption','bond cash-flow map',svg,'Whether the unknown is price or yield, the structure is the same: a coupon stream plus a redemption amount. Draw that structure first before writing the equation.');
+  }
+
+  // Duration and immunization
+  if (topic.includes('duration') || topic.includes('immunization')) {
+    if (sub.includes('immunization') || sub.includes('portfolio allocation') || sub.includes('pv and duration') || sub.includes('duration matching') || sub.includes('two zero')) {
+      const svg=`<line x1="70" y1="174" x2="690" y2="174" stroke="#98A4B4" stroke-width="2"/>
+        <circle class="pop" cx="180" cy="128" r="25" fill="#E7EEFC" stroke="#5876A4" stroke-width="3"/><circle class="pop pop2" cx="555" cy="88" r="36" fill="#E7EEFC" stroke="#5876A4" stroke-width="3"/>
+        <circle class="pop pop3 pulse" cx="405" cy="109" r="14" fill="#DFEEE2" stroke="#6F9B7B" stroke-width="3"/>
+        <path class="draw" d="M180 128 L405 109 L555 88" stroke="#6F9B7B" stroke-width="4"/>
+        <line class="dashMove" x1="405" y1="51" x2="405" y2="171" stroke="#AD6972" stroke-width="3"/>
+        <text x="405" y="39" text-anchor="middle" fill="#96555F" font-size="11" font-weight="800">liability duration</text>
+        <text x="180" y="212" text-anchor="middle" fill="#526B94" font-size="11">short asset</text><text x="555" y="212" text-anchor="middle" fill="#526B94" font-size="11">long asset</text>
+        <text x="405" y="140" text-anchor="middle" fill="#55735E" font-size="10">weighted center</text>`;
+      return wrap('Immunization matches present value and duration together','balance-point idea',svg,'The picture shows why two assets are often needed: one shorter and one longer than the liability so that both total present value and time-center can be matched simultaneously.');
+    }
+    if (sub.includes('convexity')) {
+      const svg=`<path class="draw" d="M90 160 C220 132 340 107 500 70 C570 53 625 42 670 36" stroke="#5876A4" stroke-width="5" fill="none"/>
+        <path class="fadeIn fade2" d="M90 155 L670 54" stroke="#AD6972" stroke-width="4" stroke-dasharray="8 8"/>
+        <circle class="pop pop3 pulse" cx="425" cy="87" r="11" fill="#DFEEE2" stroke="#6F9B7B" stroke-width="3"/>
+        <text x="185" y="93" fill="#526B94" font-size="11">curved price-yield relationship</text>
+        <text x="465" y="122" fill="#96555F" font-size="11">duration-only line</text>
+        <text x="392" y="36" fill="#55735E" font-size="11">convexity improves the approximation</text>`;
+      return wrap('Convexity corrects the straight-line duration approximation','price-yield curve',svg,'Duration uses the tangent line at the current yield. Convexity bends that approximation toward the true curved price-yield relationship, especially for larger yield changes.');
+    }
+    const svg=`<line x1="70" y1="174" x2="690" y2="174" stroke="#98A4B4" stroke-width="2"/>
+      <circle class="pop" cx="160" cy="137" r="16" fill="#DFEEE2"/><circle class="pop pop2" cx="315" cy="117" r="24" fill="#DFEEE2"/><circle class="pop pop3" cx="560" cy="78" r="39" fill="#E7EEFC"/>
+      <line class="dashMove" x1="446" y1="43" x2="446" y2="173" stroke="#AD6972" stroke-width="3"/>
+      <text x="446" y="33" text-anchor="middle" fill="#96555F" font-size="11" font-weight="800">PV-weighted average time</text>
+      <text x="160" y="212" text-anchor="middle" fill="#718096" font-size="11">early CF</text><text x="315" y="212" text-anchor="middle" fill="#718096" font-size="11">middle CF</text><text x="560" y="212" text-anchor="middle" fill="#718096" font-size="11">late large CF</text>`;
+    return wrap('Duration is the time-center of present value','center of gravity',svg,'Larger present-value cash flows pull the duration toward their payment date. This view works for bonds and irregular cash-flow streams alike.');
+  }
+
+  // Yield curves and forwards
+  if (topic.includes('yield curves') || topic.includes('forwards') || topic.includes('futures') || topic.includes('swaps') || topic.includes('derivatives')) {
+    if (sub.includes('bootstrapping spot rates')) {
+      const svg=`<line x1="70" y1="174" x2="690" y2="174" stroke="#98A4B4" stroke-width="2"/><line x1="70" y1="35" x2="70" y2="174" stroke="#98A4B4" stroke-width="2"/>
+        <path class="draw" d="M90 144 C190 135 260 122 345 108 C445 91 540 78 668 55" stroke="#5876A4" stroke-width="5" fill="none"/>
+        ${[[145,136],[255,123],[365,105],[485,84],[620,63]].map((p,i)=>`<circle class="pop pop${Math.min(i+1,4)}" cx="${p[0]}" cy="${p[1]}" r="8" fill="#DFEEE2" stroke="#6F9B7B" stroke-width="3"/>`).join('')}
+        <path class="dashMove" d="M145 136 L255 123 L365 105" stroke="#AD6972" stroke-width="3"/>
+        <text x="260" y="75" text-anchor="middle" fill="#96555F" font-size="11">solve one unknown spot rate at a time</text>`;
+      return wrap('Bootstrapping solves the term structure sequentially','spot-curve build',svg,'Start with the shortest par bond, solve its spot rate, substitute that discount factor into the next bond equation, and continue maturity by maturity.');
+    }
+    if (sub.includes('pricing with a forward rate') || sub.includes('deferred loan forward rate')) {
+      const svg=`${baseAxis([{x:90,label:'0'},{x:280,label:'1'},{x:480,label:'2'},{x:660,label:'3'}])}
+        <rect class="fadeIn" x="120" y="52" width="120" height="36" rx="12" fill="#E7EEFC"/><text x="180" y="74" text-anchor="middle" fill="#526B94" font-size="11" font-weight="800">spot to year 1</text>
+        <rect class="fadeIn fade2" x="320" y="52" width="120" height="36" rx="12" fill="#FFF3CF"/><text x="380" y="74" text-anchor="middle" fill="#7D6A35" font-size="11" font-weight="800">spot to year 2</text>
+        <rect class="fadeIn fade3" x="515" y="52" width="120" height="36" rx="12" fill="#DFEEE2"/><text x="575" y="74" text-anchor="middle" fill="#55735E" font-size="11" font-weight="800">forward for later year</text>
+        <path class="dashMove" d="M281 131 C345 95 420 95 478 131" stroke="#AD6972" stroke-width="3" fill="none"/><path class="dashMove" d="M481 131 C545 95 610 95 658 131" stroke="#6F9B7B" stroke-width="3" fill="none"/>
+        <text x="570" y="112" fill="#55735E" font-size="11">unknown future borrowing/lending rate</text>`;
+      return wrap('Forward rates describe growth between future dates','spot + forward decomposition',svg,'A forward rate is not a rate from time 0. It is the rate that connects two future dates once the earlier spot discount factors are already known.');
+    }
+    if (sub.includes('forward price of a zero')) {
+      const svg=`<rect class="pop" x="85" y="70" width="120" height="66" rx="16" fill="#E7EEFC"/><text x="145" y="95" text-anchor="middle" fill="#44536B" font-size="11" font-weight="800">today</text><text x="145" y="118" text-anchor="middle" fill="#526B94" font-size="11">agree on delivery price</text>
+        <path class="draw" d="M220 103 L510 103" stroke="#5876A4" stroke-width="5"/><path d="M510 103l-16-9v18z" fill="#5876A4"/>
+        <rect class="pop pop2" x="520" y="70" width="120" height="66" rx="16" fill="#FFF3CF"/><text x="580" y="95" text-anchor="middle" fill="#7D6A35" font-size="11" font-weight="800">delivery at t=2</text><text x="580" y="118" text-anchor="middle" fill="#7D6A35" font-size="11">receive 5-year zero</text>
+        <rect class="pop pop3" x="620" y="18" width="90" height="42" rx="12" fill="#DFEEE2"/><text x="665" y="44" text-anchor="middle" fill="#55735E" font-size="11">matures later at 1,000</text>`;
+      return wrap('Forward on a zero-coupon bond fixes the delivery price today','deferred bond purchase',svg,'This is a forward to buy a bond in the future, not a bond price today. The no-arbitrage price is built from the relationship between the current spot price of the future-delivered bond and the discount factor to the delivery date.');
+    }
+    if (sub.includes('forward contract value')) {
+      const svg=`<rect class="pop" x="88" y="65" width="140" height="70" rx="16" fill="#E7EEFC"/><text x="158" y="93" text-anchor="middle" fill="#44536B" font-size="11" font-weight="800">old contract</text><text x="158" y="116" text-anchor="middle" fill="#526B94" font-size="11">delivery price K</text>
+        <path class="draw" d="M246 100 L500 100" stroke="#5876A4" stroke-width="5"/><path d="M500 100l-16-9v18z" fill="#5876A4"/>
+        <rect class="pop pop2" x="512" y="65" width="140" height="70" rx="16" fill="#DFEEE2"/><text x="582" y="93" text-anchor="middle" fill="#44536B" font-size="11" font-weight="800">market forward</text><text x="582" y="116" text-anchor="middle" fill="#55735E" font-size="11">current forward price F</text>
+        <text x="379" y="58" text-anchor="middle" fill="#526B94" font-size="11">value today = difference between old and new delivery prices</text>`;
+      return wrap('Value of an existing forward compares K with the current forward price','mark-to-market idea',svg,'A newly issued forward has zero value. An existing forward has value because its fixed delivery price may differ from the delivery price that a new contract would use today.');
+    }
+    if (sub.includes('equity forward') || sub.includes('stock forward') || sub.includes('index forward') || sub.includes('forward price with discrete dividends')) {
+      const discrete = !text.includes('continuous dividend yield');
+      const svg=`<rect class="pop" x="80" y="70" width="130" height="65" rx="16" fill="#E7EEFC"/><text x="145" y="95" text-anchor="middle" fill="#44536B" font-size="11" font-weight="800">Spot S₀</text><text x="145" y="118" text-anchor="middle" fill="#526B94" font-size="17">today</text>
+        <path class="draw" d="M225 102 L610 102" stroke="#5876A4" stroke-width="5"/><path d="M610 102l-16-9v18z" fill="#5876A4"/>
+        ${discrete?`${down(330,102,30,'dividend','pop pop2')}${down(455,102,30,'dividend','pop pop3')}`:`<text x="395" y="82" text-anchor="middle" fill="#55735E" font-size="11">continuous dividend yield reduces carry</text>`}
+        <rect class="pop pop4" x="615" y="70" width="105" height="65" rx="16" fill="#DFEEE2"/><text x="668" y="95" text-anchor="middle" fill="#44536B" font-size="11" font-weight="800">Forward</text><text x="668" y="118" text-anchor="middle" fill="#55735E" font-size="17">F₀,T</text>`;
+      return wrap('Forward price = carry the income-adjusted spot value to delivery','cost of carry',svg,'If dividends are known in cash amounts, remove their present value from spot before carrying. If the question uses a continuous dividend yield, reduce the effective growth rate accordingly.');
+    }
+    if (sub.includes('par swap rate')) {
+      const svg=`<rect class="pop" x="92" y="58" width="170" height="70" rx="18" fill="#E7EEFC"/><text x="177" y="89" text-anchor="middle" fill="#44536B" font-size="12" font-weight="800">Fixed leg</text><text x="177" y="110" text-anchor="middle" fill="#526B94" font-size="11">K × annuity factor</text>
+        <rect class="pop pop2" x="500" y="58" width="170" height="70" rx="18" fill="#DFEEE2"/><text x="585" y="89" text-anchor="middle" fill="#44536B" font-size="12" font-weight="800">Floating leg</text><text x="585" y="110" text-anchor="middle" fill="#55735E" font-size="11">1 − discount factor</text>
+        <text x="380" y="102" text-anchor="middle" fill="#718096" font-size="26">=</text>
+        <text x="380" y="155" text-anchor="middle" fill="#7D6A35" font-size="11">par swap rate makes the swap worth zero at inception</text>`;
+      return wrap('Par swap rate balances the fixed and floating legs','swap inception',svg,'For a plain-vanilla par swap, the present value of the fixed coupon stream equals the value of the floating leg, so the initial swap value is zero.');
+    }
+    if (sub.includes('swap value') || topic.includes('swaps') || sub.includes('value of pay-fixed swap')) {
+      const svg=`<rect class="pop" x="74" y="65" width="180" height="74" rx="18" fill="#E7EEFC"/><text x="164" y="96" text-anchor="middle" fill="#44536B" font-size="12" font-weight="800">Fixed-rate side</text><text x="164" y="117" text-anchor="middle" fill="#526B94" font-size="11">remaining fixed coupons</text>
+        <rect class="pop pop2" x="506" y="65" width="180" height="74" rx="18" fill="#DFEEE2"/><text x="596" y="96" text-anchor="middle" fill="#44536B" font-size="12" font-weight="800">Floating-rate side</text><text x="596" y="117" text-anchor="middle" fill="#55735E" font-size="11">par floater after reset</text>
+        <path class="draw" d="M260 82 C340 36 420 36 500 82" stroke="#5876A4" stroke-width="5" fill="none"/>
+        <path class="draw" d="M500 126 C420 171 340 171 260 126" stroke="#6F9B7B" stroke-width="5" fill="none"/>
+        <text x="380" y="190" text-anchor="middle" fill="#718096" font-size="11">value = receive leg − pay leg, from the holder\'s perspective</text>`;
+      return wrap('Existing swap value is one leg minus the other','mark-to-market swap',svg,'After a reset date, the floating leg is often easiest to value as a par floater. Then subtract the fixed leg or vice versa according to the payer/receiver perspective.');
+    }
+    if (sub.includes('fra payoff') || sub.includes('caplet') || sub.includes('floorlet')) {
+      const label = sub.includes('caplet') ? 'caplet payoff' : sub.includes('floorlet') ? 'floorlet payoff' : 'FRA payoff';
+      const svg=`${baseAxis([{x:85,label:'today'},{x:390,label:'reset'},{x:650,label:'loan end'}])}
+        <rect class="pop" x="318" y="48" width="145" height="58" rx="15" fill="#E7EEFC"/><text x="390" y="73" text-anchor="middle" fill="#44536B" font-size="11" font-weight="800">observe market rate</text><text x="390" y="92" text-anchor="middle" fill="#526B94" font-size="10">compare with strike / contract rate</text>
+        <path class="dashMove" d="M402 111 C480 95 565 96 630 137" stroke="#6F9B7B" stroke-width="4" fill="none"/>
+        <rect class="pop pop3" x="565" y="115" width="125" height="45" rx="12" fill="#DFEEE2"/><text x="628" y="142" text-anchor="middle" fill="#44536B" font-size="11" font-weight="800">${label}</text>
+        <text x="382" y="214" text-anchor="middle" fill="#718096" font-size="11">reset date and payoff date are not always the same</text>`;
+      return wrap('Rate-option style questions always have two dates','reset versus payment date',svg,'First compare the observed reference rate with the strike/contract rate at reset. Then place the payoff at the correct settlement date and discount only if the question measures value earlier.');
+    }
+    if (sub.includes('futures duration hedge') || sub.includes('equity index beta hedge') || sub.includes('futures margin')) {
+      if (sub.includes('margin')) {
+        const svg=`<rect class="pop" x="105" y="54" width="150" height="48" rx="14" fill="#E7EEFC"/><text x="180" y="82" text-anchor="middle" fill="#44536B" font-size="12" font-weight="800">margin account</text>
+          <path class="draw" d="M180 103 L180 170" stroke="#5876A4" stroke-width="5"/>
+          <path class="draw" d="M320 140 L650 140" stroke="#98A4B4" stroke-width="2"/>
+          <line class="fadeIn" x1="320" y1="96" x2="650" y2="96" stroke="#6F9B7B" stroke-width="3" stroke-dasharray="8 8"/><text x="530" y="88" fill="#55735E" font-size="11">initial margin</text>
+          <line class="fadeIn fade2" x1="320" y1="126" x2="650" y2="126" stroke="#AD6972" stroke-width="3" stroke-dasharray="8 8"/><text x="535" y="118" fill="#96555F" font-size="11">maintenance margin</text>
+          <path class="drawFast" d="M340 108 L390 121 L450 103 L520 133 L610 111" stroke="#5876A4" stroke-width="4" fill="none"/>
+          <text x="490" y="168" text-anchor="middle" fill="#718096" font-size="11">daily gains/losses move the margin balance</text>`;
+        return wrap('Futures margin is a daily-accounting question','marking to market',svg,'Unlike forwards, futures are settled daily. Track the margin account after each day’s price change and compare the balance with the maintenance requirement.');
+      }
+      const hedgeType = sub.includes('beta') ? 'beta exposure' : 'dollar duration';
+      const svg=`<rect class="pop" x="80" y="65" width="190" height="82" rx="18" fill="#E7EEFC"/><text x="175" y="96" text-anchor="middle" fill="#44536B" font-size="12" font-weight="800">Portfolio exposure</text><text x="175" y="122" text-anchor="middle" fill="#526B94" font-size="20" font-weight="900">${sub.includes('beta')?'β':'D'}</text>
+        <path class="draw" d="M285 106 L470 106" stroke="#AD6972" stroke-width="5"/><path d="M470 106l-15-9v18z" fill="#AD6972"/>
+        <rect class="pop pop2" x="490" y="65" width="190" height="82" rx="18" fill="#DFEEE2"/><text x="585" y="96" text-anchor="middle" fill="#44536B" font-size="12" font-weight="800">Futures exposure</text><text x="585" y="122" text-anchor="middle" fill="#55735E" font-size="20" font-weight="900">N × contract</text>
+        <text x="380" y="183" text-anchor="middle" fill="#718096" font-size="11">choose N so the unwanted ${hedgeType} is offset</text>`;
+      return wrap('Hedge contracts offset the relevant portfolio sensitivity','hedging',svg,'The important quantity is not just market value. Match the portfolio sensitivity you want to change: beta for an equity-index hedge, or dollar duration for an interest-rate hedge.');
+    }
+    if (sub.includes('put-call parity') || sub.includes('parity mispricing') || sub.includes('synthetic forward')) {
+      const svg=`<rect class="pop" x="78" y="45" width="155" height="58" rx="15" fill="#E7EEFC"/><text x="155" y="72" text-anchor="middle" fill="#44536B" font-size="12" font-weight="800">Call</text><text x="155" y="91" text-anchor="middle" fill="#526B94" font-size="11">+ C</text>
+        <text x="275" y="82" text-anchor="middle" fill="#718096" font-size="24">+</text>
+        <rect class="pop pop2" x="310" y="45" width="155" height="58" rx="15" fill="#FFF3CF"/><text x="388" y="72" text-anchor="middle" fill="#44536B" font-size="12" font-weight="800">PV(strike)</text><text x="388" y="91" text-anchor="middle" fill="#7D6A35" font-size="11">+ K·v</text>
+        <text x="505" y="82" text-anchor="middle" fill="#718096" font-size="24">=</text>
+        <rect class="pop pop3" x="542" y="45" width="140" height="58" rx="15" fill="#DFEEE2"/><text x="612" y="72" text-anchor="middle" fill="#44536B" font-size="12" font-weight="800">Put + stock</text><text x="612" y="91" text-anchor="middle" fill="#55735E" font-size="11">P + S₀ − PV(div)</text>
+        <path class="draw" d="M105 157 L660 157" stroke="#98A4B4" stroke-width="2"/><text x="380" y="188" text-anchor="middle" fill="#718096" font-size="11">same payoff at expiry → same value today</text>`;
+      return wrap('Parity is a replication argument, not just a formula','replication',svg,'If two portfolios always give the same terminal payoff, they must have the same price today. Dividend adjustments belong on the stock side of the parity relationship.');
+    }
+    if (sub.includes('binomial')) {
+      const svg=`<circle class="pop" cx="110" cy="112" r="24" fill="#E7EEFC" stroke="#5876A4" stroke-width="3"/><text x="110" y="117" text-anchor="middle" fill="#44536B" font-size="12" font-weight="800">S₀</text>
+        <path class="draw" d="M135 100 L330 54 M135 124 L330 170" stroke="#5876A4" stroke-width="4"/>
+        <circle class="pop pop2" cx="350" cy="50" r="25" fill="#DFEEE2" stroke="#6F9B7B" stroke-width="3"/><text x="350" y="55" text-anchor="middle" fill="#44536B" font-size="11" font-weight="800">Su</text>
+        <circle class="pop pop2" cx="350" cy="174" r="25" fill="#F8E8EA" stroke="#AD6972" stroke-width="3"/><text x="350" y="179" text-anchor="middle" fill="#44536B" font-size="11" font-weight="800">Sd</text>
+        <path class="drawFast" d="M376 49 L585 26 M376 55 L585 88 M376 170 L585 142 M376 178 L585 204" stroke="#98A4B4" stroke-width="3"/>
+        <rect class="pop pop4" x="590" y="12" width="105" height="42" rx="11" fill="#DFEEE2"/><rect class="pop pop4" x="590" y="70" width="105" height="42" rx="11" fill="#FFF3CF"/><rect class="pop pop4" x="590" y="128" width="105" height="42" rx="11" fill="#FFF3CF"/><rect class="pop pop4" x="590" y="186" width="105" height="42" rx="11" fill="#F8E8EA"/>
+        <text x="520" y="118" text-anchor="middle" fill="#718096" font-size="11">build payoffs forward, value backward</text>`;
+      return wrap('Binomial option pricing uses a stock tree and backward induction','tree method',svg,'The stock-price tree is only half the job. After building terminal payoffs, move backward with risk-neutral valuation; for American options, also check early exercise at each node.');
+    }
+    if (sub.includes('butterfly') || sub.includes('bear put') || sub.includes('collar') || sub.includes('lower bound')) {
+      if (sub.includes('lower bound')) {
+        const svg=`<rect class="pop" x="85" y="69" width="190" height="75" rx="18" fill="#E7EEFC"/><text x="180" y="98" text-anchor="middle" fill="#44536B" font-size="12" font-weight="800">Stock less PV(dividends)</text><text x="180" y="122" text-anchor="middle" fill="#526B94" font-size="16">S₀ − PV(D)</text>
+          <text x="330" y="111" text-anchor="middle" fill="#718096" font-size="28">−</text><rect class="pop pop2" x="382" y="69" width="125" height="75" rx="18" fill="#FFF3CF"/><text x="445" y="98" text-anchor="middle" fill="#44536B" font-size="12" font-weight="800">PV(K)</text><text x="445" y="122" text-anchor="middle" fill="#7D6A35" font-size="16">K·v</text>
+          <text x="555" y="111" text-anchor="middle" fill="#718096" font-size="28">≤</text><rect class="pop pop3" x="595" y="69" width="90" height="75" rx="18" fill="#DFEEE2"/><text x="640" y="110" text-anchor="middle" fill="#55735E" font-size="16" font-weight="900">Call</text>
+          <text x="380" y="190" text-anchor="middle" fill="#718096" font-size="11">otherwise a no-arbitrage lower bound would be violated</text>`;
+        return wrap('Lower bounds come from a comparison portfolio','arbitrage bound',svg,'The bound is not arbitrary. It is the value of a portfolio that a call option can never be worth less than at expiration.');
+      }
+      const butterfly = sub.includes('butterfly');
+      const collar = sub.includes('collar');
+      const path = butterfly?'M90 165 L255 165 L370 62 L485 165 L670 165':collar?'M90 145 L240 145 L370 100 L520 55 L670 55':'M90 55 L280 55 L505 160 L670 160';
+      const label = butterfly?'peak payoff at middle strike':collar?'downside floor + upside cap':'profit changes once each put crosses its strike';
+      const svg=`<line x1="75" y1="165" x2="690" y2="165" stroke="#98A4B4" stroke-width="2"/><line x1="370" y1="30" x2="370" y2="190" stroke="#E2E6EC" stroke-width="2"/>
+        <path class="draw" d="${path}" stroke="#5876A4" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle class="pop pop2 pulse" cx="370" cy="${butterfly?62:collar?100:55}" r="9" fill="#DFEEE2" stroke="#6F9B7B" stroke-width="3"/>
+        <text x="520" y="42" fill="#526B94" font-size="11">${label}</text>`;
+      return wrap('Option spread payoff is piecewise by stock-price region','payoff shape',svg,'Mark the relevant strikes on the x-axis, then write the net payoff region by region. Add option premiums only if the question asks for profit, not payoff.');
+    }
+  }
+
+  // Default fallback visual
+  const svg=`${baseAxis([{x:86,label:'0'},{x:240,label:'1'},{x:390,label:'2'},{x:540,label:'3'},{x:665,label:'focal'}])}
+    ${up(240,174,42,'CF₁','pop')}${up(390,174,55,'CF₂','pop pop2')}${up(540,174,67,'CF₃','pop pop3')}
+    <path class="dashMove" d="M250 125 C360 70 520 68 648 95" stroke="#5876A4" stroke-width="3" fill="none"/>
+    <circle class="pop pop4 pulse" cx="665" cy="95" r="11" fill="#DFEEE2" stroke="#6F9B7B" stroke-width="3"/>
+    <text x="420" y="59" text-anchor="middle" fill="#526B94" font-size="11">convert all cash flows to one date before comparing</text>`;
+  return wrap('Draw the timeline before choosing the formula','cash-flow map',svg,'When in doubt, start with timing. A careful timeline almost always reveals which FM formula or present-value identity should be used.');
+}
+
+function startTimer(){if(timerHandle)clearInterval(timerHandle);tick();timerHandle=setInterval(tick,1000)}
+function tick(){if(state.mode!=="mock"||state.submittedAt){if(timerHandle)clearInterval(timerHandle);return}const r=remaining();$("mainTimer").textContent=fmt(r);$("qTimer").textContent=fmt(liveQTime(state.current));savePulse++;if(savePulse%5===0)saveAttempt();if(r<=0){state.timedOut=true;finishSession(true)}}
+function correctCount(){
+  const s=currentSet();let n=0;
+  s.questions.forEach((q,i)=>{
+    const a=state.answers[i];if(!a)return;
+    if(state.mode==="practice"){if(a===q.correct)n++}
+    else if(fnv1a(`P26|SET${state.setId}|${q.id}|${a}|pX9`)===MOCK_HASHES[String(state.setId)][i])n++
+  });return n
+}
+function openFinish(){
+  const s=currentSet(),done=state.mode==="practice"?state.revealed.filter(Boolean).length:state.answers.filter(Boolean).length;
+  $("finishTitle").textContent=state.mode==="practice"?"Finish this practice set?":"End this mock exam?";
+  $("finishCopy").textContent=state.mode==="practice"
+    ? `You have revealed ${done} of ${s.questions.length} solutions. Any unanswered questions count as incorrect for the preliminary result.`
+    : `You have answered ${done} of ${s.questions.length} questions. Once submitted, the attempt is locked.`;
+  $("finishModal").classList.remove("hidden")
+}
+function finishSession(timeout=false){
+  if(state.submittedAt)return;accrue();state.submittedAt=timeout?Math.min(Date.now(),deadline()):Date.now();state.timedOut=!!timeout;state.currentEnteredAt=null;saveAttempt();$("finishModal").classList.add("hidden");if(timerHandle)clearInterval(timerHandle);renderResult()
+}
+function renderResult(){
+  showOnly("result");
+  const s=currentSet();
+  const c=correctCount();
+  const pass=c/s.questions.length>=PASS_THRESHOLD;
+  const d=new Date(state.submittedAt||Date.now());
+  const total=Math.min(EXAM_MS,Math.max(0,(state.submittedAt||Date.now())-state.startedAt));
+  const answered=state.answers.filter(Boolean).length;
+
+  $("resultName").textContent=state.name || "Candidate";
+  $("resultMeta").innerHTML=
+    `<b>Exam</b><span>${esc(s.label)}</span>`+
+    `<b>Date</b><span>${esc(d.toLocaleDateString(undefined,{year:"numeric",month:"short",day:"2-digit"}))}</span>`+
+    `<b>Answered</b><span>${answered} / ${s.questions.length}</span>`+
+    `<b>Time used</b><span>${fmt(total)}</span>`+
+    `<b>Confirmation</b><span>${esc(state.confirmation)}</span>`;
+
+  const rs=$("resultStatus");
+  rs.className="result-status "+(pass?"pass":"fail");
+  rs.querySelector("span").textContent=pass
+    ? "Preliminary result: Pass"
+    : "Preliminary result: Did not pass";
+
+  $("resultMessage").textContent=pass
+    ? "Congratulations. This attempt reached the practice passing threshold. Download the attempt report below if you would like to review the student's responses and timing."
+    : "This attempt did not reach the practice passing threshold. Download the attempt report below to review the student's responses and timing.";
+
+  $("downloadBtn").classList.remove("hidden");
+}
+function ascii(s){const map={"−":"-","–":"-","—":"-","’":"'","“":'"',"”":'"',"•":"-","→":"->","≤":"<=","≥":">=","½":"1/2","δ":"delta","∫":"int","₀":"0","₁":"1","₂":"2","₃":"3","₄":"4","₅":"5","₆":"6","₇":"7","₈":"8","₉":"9"};s=String(s).replace(/[−–—’“”•→≤≥½δ∫₀₁₂₃₄₅₆₇₈₉]/g,c=>map[c]||c);try{s=s.normalize("NFKD").replace(/[\u0300-\u036f]/g,"")}catch(e){}return s.replace(/[^\x20-\x7E]/g,"?")}
+function pdfEsc(s){return ascii(s).replace(/\\/g,"\\\\").replace(/\(/g,"\\(").replace(/\)/g,"\\)")}
+function simplePDF(pages){const o=[],refs=[],font=3;for(let i=0;i<pages.length;i++)refs.push(`${4+i*2} 0 R`);o[1]="<< /Type /Catalog /Pages 2 0 R >>";o[2]=`<< /Type /Pages /Kids [${refs.join(" ")}] /Count ${pages.length} >>`;o[3]="<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>";pages.forEach((lines,i)=>{let stream="";lines.forEach(l=>stream+=`BT /F1 ${l.size} Tf 1 0 0 1 ${l.x} ${l.y} Tm (${pdfEsc(l.text)}) Tj ET\n`);o[4+i*2]=`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 ${font} 0 R >> >> /Contents ${5+i*2} 0 R >>`;o[5+i*2]=`<< /Length ${stream.length} >>\nstream\n${stream}endstream`});let pdf="%PDF-1.4\n%1234\n",offs=[0];for(let i=1;i<o.length;i++){offs[i]=pdf.length;pdf+=`${i} 0 obj\n${o[i]}\nendobj\n`}const x=pdf.length;pdf+=`xref\n0 ${o.length}\n0000000000 65535 f \n`;for(let i=1;i<o.length;i++)pdf+=String(offs[i]).padStart(10,"0")+" 00000 n \n";pdf+=`trailer\n<< /Size ${o.length} /Root 1 0 R >>\nstartxref\n${x}\n%%EOF`;return pdf}
+function downloadPDF(){
+  const s=currentSet(),pages=[],per=10,total=Math.min(EXAM_MS,Math.max(0,(state.submittedAt||Date.now())-state.startedAt)),stamp=new Date(state.submittedAt||Date.now()).toLocaleString();
+  for(let start=0;start<s.questions.length;start+=per){const lines=[];lines.push({x:52,y:750,size:18,text:"P Practice Exam 1 Attempt Report"});lines.push({x:52,y:727,size:12,text:`EXAM SET: ${s.label.toUpperCase()} - ${s.name.toUpperCase()}`});lines.push({x:52,y:704,size:10,text:"Student: "+state.name});lines.push({x:52,y:688,size:9,text:"Submitted: "+stamp});lines.push({x:340,y:704,size:10,text:"Total time: "+fmt(total)});lines.push({x:340,y:688,size:9,text:"Confirmation: "+state.confirmation});lines.push({x:52,y:663,size:8,text:"Correct answers and numerical score intentionally omitted."});let y=626;for(let i=start;i<Math.min(start+per,s.questions.length);i++){const q=s.questions[i],a=state.answers[i]||"Unanswered";lines.push({x:52,y,size:10,text:`Q${String(q.id).padStart(2,"0")}  ${q.topic} - ${q.subtopic}`});lines.push({x:66,y:y-16,size:9,text:`Student answer: ${a}     Time spent: ${fmt(state.qTimes[i]||0)}`});y-=52}lines.push({x:52,y:72,size:8,text:`${s.label} | Page ${Math.floor(start/per)+1} | Send this PDF to Raymond for feedback.`});pages.push(lines)}
+  const blob=new Blob([simplePDF(pages)],{type:"application/pdf"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`FM_${s.label.replace(" ","_")}_Attempt_${state.name.replace(/[^a-z0-9]+/gi,"_")}.pdf`;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},800)
+}
+
+document.querySelectorAll(".mode-tab").forEach(b=>b.onclick=()=>{mode=b.dataset.mode;selectedSetId=1;renderLanding()});
+$("startBtn").onclick=startSession;$("studentName").addEventListener("keydown",e=>{if(e.key==="Enter")startSession()});
+$("prevBtn").onclick=()=>goTo(state.current-1);$("nextBtn").onclick=()=>{const s=currentSet();if(state.current===s.questions.length-1)openFinish();else goTo(state.current+1)};
+$("flagBtn").onclick=()=>{state.flags[state.current]=!state.flags[state.current];saveAttempt();renderQuestion();renderPalette()};
+$("revealBtn").onclick=revealCurrent;$("endBtn").onclick=openFinish;
+$("keepBtn").onclick=()=>$("finishModal").classList.add("hidden");$("finishConfirmBtn").onclick=()=>finishSession(false);
+$("cancelPassBtn").onclick=()=>{$("passModal").classList.add("hidden");pendingUnlock=null};$("unlockBtn").onclick=tryUnlock;$("passInput").addEventListener("keydown",e=>{if(e.key==="Enter")tryUnlock()});
+$("downloadBtn").onclick=downloadPDF;$("homeBtn").onclick=()=>{if(confirm("Return to the set selection screen? This will clear the finished attempt from this browser.")){localStorage.removeItem(ATTEMPT_KEY);state=freshState(1,"mock");mode="mock";selectedSetId=1;$("studentName").value="";renderLanding()}};
+window.addEventListener("beforeunload",()=>{if(state.started&&!state.submittedAt){accrue();saveAttempt()}});
+(function boot(){if(state.started&&!state.submittedAt){mode=state.mode;selectedSetId=state.setId;if(state.mode==="mock"&&remaining()<=0){state.timedOut=true;finishSession(true)}else renderWork()}else if(state.submittedAt){mode=state.mode;selectedSetId=state.setId;renderResult()}else renderLanding()})();
+</script>
+</body>
+</html>
