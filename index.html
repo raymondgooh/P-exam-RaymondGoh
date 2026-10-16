@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ActuaryMadeEasy — Exam P Practice Mocks</title>
+<style>
+:root{
+  --desk:#e3e8e5; --paper:#ffffff; --ink:#14211c; --muted:#56635d; --rule:#cdd5d0;
+  --accent:#165c45; --accent-2:#1f7a5c; --soft:#f2f5f3; --focus:#e8b931;
+  --good:#165c45; --good-bg:#e5f1eb; --warn:#8a5a00; --warn-bg:#fbf1dc; --bad:#b3261e; --bad-bg:#fbe9e7;
+  --serif:"Palatino Linotype",Palatino,"Book Antiqua",Georgia,"Times New Roman",serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--desk);color:var(--ink);font-family:var(--sans);line-height:1.5}
+.hidden{display:none!important}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+button{font:inherit;cursor:pointer}
+.wrap{padding:24px 16px 40px}
+.paper{background:var(--paper);max-width:860px;margin:0 auto;box-shadow:0 1px 2px rgba(20,40,30,.16),0 10px 28px rgba(20,40,30,.09)}
+
+/* brand */
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
+.mark{width:34px;height:34px;border-radius:7px;background:var(--accent);color:#fff;display:grid;place-items:center;font-family:var(--serif);font-size:1.35rem;font-style:italic;line-height:1;flex:0 0 auto}
+.wm{display:flex;flex-direction:column;line-height:1.1}
+.wm b{font-size:1.05rem;letter-spacing:-.01em}
+.wm span{font-size:.78rem;color:var(--muted)}
+.bar .mark{background:#fff;color:var(--accent);width:28px;height:28px;font-size:1.1rem}
+.bar .wm span{color:#cfe3da}
+
+/* menu / picker */
+.menu{padding:30px 44px 36px}
+.menu header{display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1.5px solid var(--ink);padding-bottom:14px}
+.menu h1{font-family:var(--serif);font-size:2rem;line-height:1.15;margin:26px 0 8px}
+.menu .lede{font-family:var(--serif);font-size:1.08rem;color:var(--muted);margin:0 0 26px;max-width:66ch}
+.cards{display:grid;gap:16px}
+.card{border:1.5px solid var(--rule);border-radius:9px;padding:20px 22px;display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap}
+.card .ct b{font-family:var(--serif);font-size:1.3rem;display:block}
+.card .ct span{font-size:.88rem;color:var(--muted)}
+.card .state{display:flex;align-items:center;gap:10px}
+.lockline{display:flex;gap:8px;align-items:center}
+.lockline input{font:inherit;padding:9px 11px;border:1.5px solid #8a978f;border-radius:5px;width:150px}
+.badge{font-size:.78rem;font-weight:700;padding:4px 9px;border-radius:20px;background:var(--good-bg);color:var(--good)}
+.err{color:var(--bad);font-size:.84rem;margin-top:6px;min-height:1.1em}
+.fine{font-size:.8rem;color:var(--muted);margin-top:22px;border-top:1px solid var(--rule);padding-top:12px}
+
+/* start */
+.start{padding:30px 44px 32px}
+.start header{display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1.5px solid var(--ink);padding-bottom:14px}
+.start header .fmt{font-size:.85rem;color:var(--muted);text-align:right}
+.start h1{font-family:var(--serif);font-size:2.1rem;line-height:1.15;margin:26px 0 8px}
+.start .lede{font-family:var(--serif);font-size:1.1rem;color:var(--muted);margin:0 0 20px;max-width:60ch}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);border:1.5px solid var(--rule);border-radius:6px;margin:0 0 22px}
+.facts div{padding:12px 14px}
+.facts div+div{border-left:1.5px solid var(--rule)}
+.facts b{display:block;font-family:var(--serif);font-size:1.5rem;line-height:1.1}
+.facts span{font-size:.82rem;color:var(--muted)}
+.rules{font-family:var(--serif);font-size:1.02rem;margin:0 0 22px;padding-left:1.1em}
+.rules li{margin:.35em 0}
+.btn{font-family:var(--sans);background:var(--accent);color:#fff;border:0;border-radius:5px;padding:12px 22px;font-weight:600;font-size:1rem;text-decoration:none;display:inline-block}
+.btn:hover{background:var(--accent-2)}
+.btn.sec{background:#fff;color:var(--accent);border:1.5px solid var(--accent)}
+.btn.sec:hover{background:var(--soft)}
+.btn.sm{padding:9px 14px;font-size:.88rem}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.resume{background:var(--warn-bg);border:1px solid #e2c88f;padding:12px 14px;border-radius:5px;margin-bottom:18px;font-size:.95rem}
+.back{font-size:.85rem;color:var(--muted);text-decoration:none}
+
+/* exam chrome */
+.bar{position:sticky;top:0;z-index:20;background:var(--accent);color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.18)}
+.bar-in{max-width:860px;margin:0 auto;padding:8px 16px;display:flex;align-items:center;gap:12px;justify-content:space-between}
+.timer{font-family:var(--mono);font-size:1.2rem;font-weight:700;padding:3px 10px;border-radius:5px;background:rgba(255,255,255,.14);min-width:6.4em;text-align:center}
+.timer.low{background:var(--focus);color:var(--ink)}
+.timer.crit{background:#b3261e;color:#fff}
+.tools{display:flex;gap:8px}
+.tbtn{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.7);border-radius:5px;padding:5px 12px;font-size:.88rem;font-weight:600}
+.tbtn:hover{background:rgba(255,255,255,.12)}
+.tbtn.solid{background:#fff;color:var(--accent);border-color:#fff}
+.navwrap{max-width:860px;margin:12px auto 0}
+.nav{display:grid;grid-template-columns:repeat(10,1fr);gap:5px}
+.chip{position:relative;height:34px;border:1.5px solid #8a978f;background:#fff;border-radius:4px;font-weight:600;font-size:.85rem;color:var(--ink);padding:0}
+.chip.done{background:var(--accent);color:#fff;border-color:var(--accent)}
+.chip.cur{outline:3px solid var(--focus);outline-offset:1px}
+.chip.flag::after{content:"";position:absolute;top:-4px;right:-4px;width:10px;height:10px;background:#b3261e;border:2px solid #fff;border-radius:50%}
+.navkey{font-size:.78rem;color:var(--muted);margin:6px 0 12px;display:flex;gap:14px;flex-wrap:wrap}
+.navkey i{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:4px;border:1.5px solid #8a978f}
+.navkey i.d{background:var(--accent);border-color:var(--accent)}
+.navkey i.f{background:#b3261e;border-color:#b3261e;border-radius:50%}
+
+.q{padding:28px 44px 24px}
+.qh{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1.5px solid var(--ink);padding-bottom:6px;margin-bottom:16px;font-family:var(--serif)}
+.qh h2{margin:0;font-size:1.2rem}
+.qh span{font-size:.85rem;color:var(--muted);font-family:var(--sans)}
+.stem{font-family:var(--serif);font-size:1.08rem;line-height:1.65;margin:0 0 6px;max-width:68ch}
+.stem p{margin:0 0 .7em}
+table.qtable{border-collapse:collapse;margin:14px 0 4px;font-family:var(--serif)}
+table.qtable th,table.qtable td{border:1px solid #9aa6a0;padding:6px 16px;text-align:center;white-space:nowrap}
+table.qtable th{background:var(--soft);font-weight:700}
+fieldset.opts{border:0;padding:0;margin:18px 0 0}
+fieldset.opts legend{font-weight:600;font-size:.85rem;margin-bottom:4px;padding:0}
+.opt{position:relative;display:flex;gap:14px;align-items:center;padding:10px 12px;border:1.5px solid var(--rule);border-radius:5px;margin:7px 0;cursor:pointer;background:#fff;max-width:460px}
+.opt:hover{border-color:#8a978f}
+.opt input{position:absolute;opacity:0;pointer-events:none}
+.opt .l{flex:0 0 28px;height:28px;border:1.5px solid #56635d;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:.85rem}
+.opt .tx{font-family:var(--serif);font-size:1.08rem;font-variant-numeric:tabular-nums}
+.opt:has(input:checked){border-color:var(--accent);background:#eef6f2}
+.opt:has(input:checked) .l{background:var(--accent);color:#fff;border-color:var(--accent)}
+.flagbtn{background:none;border:0;color:var(--muted);text-decoration:underline;padding:6px;font-size:.88rem}
+.flagbtn[aria-pressed=true]{color:#b3261e;font-weight:700}
+.clr{background:none;border:0;color:var(--muted);text-decoration:underline;padding:6px;font-size:.85rem}
+.qf{display:flex;justify-content:space-between;gap:12px;margin-top:24px;padding-top:14px;border-top:1px solid var(--rule)}
+
+.modal{position:fixed;inset:0;background:rgba(10,25,18,.55);display:grid;place-items:center;z-index:50;padding:16px}
+.modal .box{background:#fff;max-width:460px;width:100%;padding:24px;border-radius:7px;max-height:90vh;overflow:auto}
+.modal h3{margin:0 0 8px;font-family:var(--serif)}
+.modal .row{display:flex;gap:10px;justify-content:flex-end;margin-top:18px;flex-wrap:wrap}
+
+/* result */
+.res{padding:34px 44px 30px}
+.res header{display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1.5px solid var(--ink);padding-bottom:14px;margin-bottom:24px}
+.res h1{font-family:var(--serif);font-size:1.6rem;margin:0 0 4px}
+.meta{color:var(--muted);font-size:.9rem;margin:0 0 20px}
+.score{display:flex;align-items:stretch;border:2px solid var(--ink);border-radius:7px;overflow:hidden;flex-wrap:wrap}
+.score .big{white-space:nowrap;padding:18px 26px;font-family:var(--serif);font-size:3.6rem;font-weight:700;line-height:1;display:flex;align-items:baseline;gap:6px;border-right:2px solid var(--ink)}
+.score .big small{font-size:1.3rem;font-weight:400;color:var(--muted)}
+.score .verdict{padding:16px 22px;display:flex;flex-direction:column;justify-content:center;flex:1}
+.score .verdict b{font-family:var(--serif);font-size:1.45rem}
+.score .verdict p{margin:.3em 0 0;font-size:.92rem}
+.score.pass .verdict{background:var(--good-bg)}
+.score.fail .verdict{background:var(--warn-bg)}
+.scale{position:relative;height:10px;background:#e6ebe8;border-radius:5px;margin:22px 0 4px}
+.scale i{position:absolute;left:0;top:0;bottom:0;border-radius:5px;background:var(--accent)}
+.scale b{position:absolute;top:-6px;bottom:-6px;width:2px;background:var(--ink)}
+.scalel{position:relative;height:1.2em;font-size:.78rem;color:var(--muted)}
+.scalel span{position:absolute;top:0}
+.next{margin-top:28px;border:2px solid var(--accent);border-radius:7px;padding:20px 22px;background:#f3f8f5}
+.next h2{font-family:var(--serif);font-size:1.25rem;margin:0 0 6px}
+.next p{font-family:var(--serif);font-size:1.02rem;margin:8px 0}
+.next .row{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 0}
+.topics{margin:26px 0 0}
+.topics h3{font-family:var(--serif);font-size:1.1rem;margin:0 0 10px}
+.trow{display:flex;align-items:center;gap:10px;font-size:.9rem;margin:6px 0}
+.trow .tn{width:170px;flex:0 0 auto;color:var(--muted)}
+.tbar{flex:1;height:9px;background:#e6ebe8;border-radius:5px;overflow:hidden}
+.tbar i{display:block;height:100%;background:var(--accent-2)}
+.trow .tv{width:48px;text-align:right;font-variant-numeric:tabular-nums}
+.review{margin:30px 0 0}
+.review h3{font-family:var(--serif);font-size:1.1rem;margin:0 0 10px}
+.rrow{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--rule);font-size:.92rem}
+.rrow .rn{width:30px;flex:0 0 auto;font-weight:700;color:var(--muted)}
+.rrow .rt{flex:1}
+.rrow .ra{font-weight:700;white-space:nowrap}
+.rrow.ok .ra{color:var(--good)}
+.rrow.bad .ra{color:var(--bad)}
+footer.disc{max-width:860px;margin:14px auto 0;font-size:.78rem;color:var(--muted);text-align:center;padding:0 16px}
+
+/* whatsapp floating */
+.wa{position:fixed;bottom:20px;right:20px;z-index:60;display:flex;align-items:center;gap:9px;background:#25D366;color:#fff;border-radius:30px;padding:12px 18px 12px 14px;box-shadow:0 4px 14px rgba(0,0,0,.25);text-decoration:none;font-weight:700;font-size:.92rem}
+.wa:hover{background:#1ebe5a}
+.wa svg{width:22px;height:22px;flex:0 0 auto}
+
+@media print{
+  .bar,.navwrap,.wa,.qf,footer.disc{display:none!important}
+  body{background:#fff}
+  .wrap{padding:0}
+  .paper{box-shadow:none;max-width:none}
+}
+
+@media (max-width:700px){
+  .start,.q,.res,.menu{padding:22px 16px}
+  .facts{grid-template-columns:1fr}
+  .facts div+div{border-left:0;border-top:1.5px solid var(--rule)}
+  .start h1,.menu h1{font-size:1.65rem}
+  .nav{grid-template-columns:repeat(6,1fr)}
+  .bar .wm{display:none}
+  .tbtn{padding:5px 9px;font-size:.82rem}
+  .score{flex-direction:column}
+  .score .big{border-right:0;border-bottom:2px solid var(--ink)}
+  .opt{max-width:none}
+  .start header .fmt{display:none}
+  .card{flex-direction:column;align-items:flex-start}
+  .trow .tn{width:110px}
+  .wa span.wat{display:none}
+}
+@media (prefers-reduced-motion:no-preference){ .chip,.opt,.btn{transition:background .12s,border-color .12s} }
+</style>
+</head>
+<body>
+
+<!-- MENU -->
+<div id="s-menu" class="wrap">
+  <div class="paper menu">
+    <header>
+      <div class="brand"><div class="mark" aria-hidden="true">&lambda;</div><div class="wm"><b>ActuaryMadeEasy</b><span>Raymond Goh, ASA</span></div></div>
+      <div class="fmt">Exam P practice mocks</div>
+    </header>
+    <h1>Pick a mock exam</h1>
+    <p class="lede">Three full-length, 30-question practice sittings written to the current SOA Exam P syllabus, at medium-to-hard difficulty. Each is timed at 3 hours, same as the real exam. Enter the password once to unlock a set &mdash; after that it stays unlocked on this device.</p>
+    <div class="cards" id="cardWrap"></div>
+    <p class="fine">Nothing is uploaded anywhere &mdash; everything runs locally in your browser. Unofficial practice material written by Raymond Goh / ActuaryMadeEasy. Not affiliated with or endorsed by the Society of Actuaries.</p>
+  </div>
+</div>
+
+<!-- START -->
+<div id="s-start" class="wrap hidden">
+  <div class="paper start">
+    <header>
+      <div class="brand"><div class="mark" aria-hidden="true">&lambda;</div><div class="wm"><b>ActuaryMadeEasy</b><span id="startSub">Exam P practice</span></div></div>
+      <div class="fmt">Exam P practice mock</div>
+    </header>
+    <h1 id="startTitle">Mock Exam</h1>
+    <p class="lede">A full-length practice sitting written to the current SOA Exam P syllabus. Original questions at medium and hard difficulty.</p>
+    <div class="facts">
+      <div><b>30</b><span>questions</span></div>
+      <div><b>3:00</b><span>hours allowed</span></div>
+      <div><b id="passFact">21 / 30</b><span>estimated pass mark (70%)</span></div>
+    </div>
+    <ul class="rules">
+      <li>One best answer per question &mdash; no partial credit.</li>
+      <li>You can flag questions and move freely between them before finishing.</li>
+      <li>The clock keeps running even if you close or reload this page.</li>
+    </ul>
+    <div id="resume" class="resume hidden"></div>
+    <p><button class="btn" id="startBtn" type="button">Start the 3-hour clock</button>
+       &nbsp; <a class="back" href="#" id="backLink1">&larr; back to mock exam list</a></p>
+    <p class="fine">Nothing is sent anywhere while you work. Your answers stay in this browser until you finish.<br>Unofficial practice material. Not affiliated with or endorsed by the Society of Actuaries.</p>
+  </div>
+</div>
+
+<!-- EXAM -->
+<div id="s-exam" class="hidden">
+  <div class="bar"><div class="bar-in">
+    <div class="brand"><div class="mark" aria-hidden="true">&lambda;</div><div class="wm"><b>ActuaryMadeEasy</b><span id="examSub">Exam P practice</span></div></div>
+    <div id="timer" class="timer" role="timer" aria-label="Time remaining">3:00:00</div>
+    <div class="tools"><button class="tbtn solid" id="finishBtn" type="button">Finish</button></div>
+  </div></div>
+  <div class="wrap">
+    <div class="navwrap">
+      <div class="nav" id="nav" role="navigation" aria-label="Question navigator"></div>
+      <div class="navkey"><span><i class="d"></i>Answered</span><span><i></i>Not answered</span><span><i class="f"></i>Flagged</span><span id="cnt"></span></div>
+    </div>
+    <div class="paper q" id="qbox"></div>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div id="s-result" class="hidden wrap"><div class="paper res" id="resbox"></div></div>
+
+<footer class="disc" id="disc">ActuaryMadeEasy by Raymond Goh. Unofficial practice material. Not affiliated with or endorsed by the Society of Actuaries. All questions are original.</footer>
+
+<a class="wa" id="waFloat" href="#" target="_blank" rel="noopener">
+  <svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16 0C7.16 0 0 7.16 0 16c0 2.9.78 5.72 2.26 8.18L.3 31.4a1 1 0 0 0 1.23 1.22l7.33-1.93A15.9 15.9 0 0 0 16 32c8.84 0 16-7.16 16-16S24.84 0 16 0Zm0 29.09c-2.56 0-5.04-.68-7.2-1.97l-.52-.3-5.43 1.43 1.45-5.3-.34-.55A13.07 13.07 0 0 1 2.91 16C2.91 8.78 8.78 2.91 16 2.91S29.09 8.78 29.09 16 23.22 29.09 16 29.09Zm7.17-9.78c-.39-.2-2.33-1.15-2.69-1.28-.36-.13-.63-.2-.89.2-.26.39-1.02 1.28-1.25 1.54-.23.26-.46.29-.85.1-2.3-1.15-3.81-2.05-5.33-4.65-.4-.69.4-.64 1.15-2.13.13-.26.07-.49-.07-.69-.13-.2-.59-1.43-.82-1.98-.22-.53-.44-.46-.62-.47-.16-.01-.35-.01-.54-.01-.19 0-.49.07-.75.36-.26.29-.98 1-.98 2.39s.98 2.78 1.11 2.98c.13.2 1.82 2.9 4.56 4.08 2.74 1.18 2.74.8 3.23.75.49-.05 1.58-.64 1.81-1.26.23-.62.23-1.15.16-1.26-.07-.11-.26-.17-.65-.37Z"/></svg>
+  <span class="wat">WhatsApp Raymond</span>
+</a>
+
+<div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="mt"><div class="box">
+  <h3 id="mt">Finish the test?</h3><p id="mb"></p>
+  <div class="row"><button class="btn sec" id="mNo" type="button">Keep working</button><button class="btn" id="mYes" type="button">Finish and see my score</button></div>
+</div></div>
+
+<script id="exam-data" type="application/json">{"1": {"title": "Exam P Mock Exam 1", "questions": [{"id": 1, "topic": "Inclusion–exclusion", "stem": "<p>Beacon Mutual offers three optional riders: <b>Accident</b>, <b>Critical illness</b> and <b>Hospital cash</b>. The probabilities that a policyholder buys each rider are <b>0.42</b>, <b>0.35</b> and <b>0.30</b>.</p><p>The probability that a policyholder buys <b>exactly two</b> of the riders is <b>0.18</b>, and the probability of buying <b>all three</b> is <b>0.05</b>.</p><p>Calculate the probability that a randomly chosen policyholder buys <b>none</b> of the riders.</p>", "options": ["0.06", "0.11", "0.26", "0.21"], "answer": 3}, {"id": 2, "topic": "Independence", "stem": "<p>Of the hospital claims Beacon Mutual receives, <b>88%</b> include emergency-room (ER) charges or operating-room (OR) charges. <b>32%</b> of claims include <b>no ER charges</b>.</p><p>The occurrence of ER charges is <b>independent</b> of the occurrence of OR charges.</p><p>Calculate the probability that a claim includes <b>OR charges</b>.</p>", "options": ["0.200", "0.625", "0.294", "0.824"], "answer": 1}, {"id": 3, "topic": "Bayes (two screens)", "stem": "<p><b>3%</b> of claims submitted to Beacon Mutual are fraudulent. Every claim passes through two screening systems.</p><p>Screen 1 flags <b>90%</b> of fraudulent claims and <b>6%</b> of legitimate claims. Screen 2 flags <b>80%</b> of fraudulent claims and <b>10%</b> of legitimate claims. Given the claim's status, the two screens act <b>independently</b>.</p><p>A claim is <b>flagged by Screen 1</b> but <b>not flagged by Screen 2</b>. Calculate the probability that it is fraudulent.</p>", "options": ["0.317", "0.769", "0.788", "0.093"], "answer": 3}, {"id": 4, "topic": "Counting (sampling)", "stem": "<p>An auditor selects <b>5 claims at random, without replacement</b>, from a file of <b>15 claims</b>: <b>6 auto</b>, <b>5 home</b> and <b>4 life</b>.</p><p>Calculate the probability that the sample contains <b>at least one claim of each type</b>.</p>", "options": ["0.2774", "0.5942", "0.7226", "0.7203"], "answer": 2}, {"id": 5, "topic": "Conditional (3 factors)", "stem": "<p>Beacon Mutual studies three risk factors <b>A, B, C</b> among its group-health members.</p><p>For each factor, the probability that a member has <b>only that factor</b> is <b>0.08</b>. For each pair, the probability of having <b>exactly those two</b> factors is <b>0.11</b>. The probability that a member has all three factors, <b>given that she has A and B</b>, is <b>1/4</b>.</p><p>Calculate the probability that a member has <b>none</b> of the three factors, given that she <b>does not have A</b>.</p>", "options": ["0.393", "0.428", "0.599", "0.593"], "answer": 3}, {"id": 6, "topic": "Which comes first", "stem": "<p>Each month, independently, a Beacon Mutual fleet policy has a <b>minor claim</b> with probability <b>0.10</b>, a <b>major claim</b> with probability <b>0.04</b>, and <b>no claim</b> otherwise (at most one claim per month).</p><p>Calculate the probability that the <b>first major claim</b> occurs <b>before the second minor claim</b>.</p>", "options": ["0.286", "0.490", "0.408", "0.510"], "answer": 1}, {"id": 7, "topic": "Bayes (risk classes)", "stem": "<p>Beacon Mutual's life portfolio is <b>50% preferred</b>, <b>35% standard</b> and <b>15% substandard</b>.</p><p>A standard life is <b>twice</b> as likely to die within a year as a preferred life. A substandard life is <b>three times</b> as likely to die as a <b>standard</b> life.</p><p>One insured died last year. Calculate the probability that the insured was <b>substandard</b>.</p>", "options": ["0.150", "0.429", "0.273", "0.667"], "answer": 1}, {"id": 8, "topic": "Counting (occupancy)", "stem": "<p>Beacon Mutual assigns <b>7 new claims</b> to <b>4 adjusters</b>. Each claim is assigned to an adjuster at random, <b>independently</b>, with each adjuster equally likely.</p><p>Calculate the probability that <b>every adjuster</b> receives <b>at least one</b> claim.</p>", "options": ["0.0938", "0.4661", "0.8665", "0.5127"], "answer": 3}, {"id": 9, "topic": "Poisson", "stem": "<p>The number of claims N filed on a Beacon Mutual policy in a year has a <b>Poisson</b> distribution. The probability of <b>exactly one</b> claim is <b>twice</b> the probability of <b>exactly three</b> claims.</p><p>Calculate the probability that the policy has <b>at least two</b> claims, given that it has <b>at least one</b> claim.</p>", "options": ["0.517", "0.843", "0.888", "0.628"], "answer": 3}, {"id": 10, "topic": "Negative binomial", "stem": "<p>A Beacon Mutual investigator reviews claims one at a time until she finds the <b>third fraudulent claim</b>. Each claim is fraudulent with probability <b>0.15</b>, independently.</p><p>Calculate the probability that she must review <b>more than 12 claims</b>.</p>", "options": ["0.2642", "0.7788", "0.7358", "0.9078"], "answer": 2}, {"id": 11, "topic": "Hypergeometric", "stem": "<p>A block of <b>25 policies</b> contains <b>8</b> that will lapse this year. An actuary selects <b>6 policies at random without replacement</b>.</p><p>Given that the sample contains <b>at least one</b> lapsing policy, calculate the probability that it contains <b>at least two</b>.</p>", "options": ["0.699", "0.405", "0.651", "0.690"], "answer": 0}, {"id": 12, "topic": "Geometric (capped)", "stem": "<p>Each year, independently, a Beacon Mutual policyholder files a claim with probability <b>0.2</b>. Beacon pays a loyalty bonus of <b>100 for each claim-free year</b> before the first claim, up to a <b>maximum of 4 years</b> (400).</p><p>Calculate the <b>expected bonus</b>.</p>", "options": ["195.2", "236.2", "295.2", "400.0"], "answer": 1}, {"id": 13, "topic": "Conditional expectation", "stem": "<p>The size X of a property loss (in $000) has density <b>f(x) = c(25 − x)</b> for <b>0 < x < 25</b>, and 0 otherwise.</p><p>Calculate <b>E[X | X > 5]</b>.</p>", "options": ["6.67", "11.67", "8.33", "15.00"], "answer": 1}, {"id": 14, "topic": "Gamma tail", "stem": "<p>A claim amount X has density <b>f(x) = x e^(−x/500) / 500²</b>, x > 0.</p><p>Calculate the probability that a claim exceeds its <b>mean by more than one standard deviation</b>.</p>", "options": ["0.145", "0.033", "0.199", "0.406"], "answer": 0}, {"id": 15, "topic": "Deductible + max payment", "stem": "<p>Losses on a Beacon Mutual policy follow a distribution with survival function <b>S(x) = [2000/(2000 + x)]³</b>, x > 0.</p><p>The policy has a <b>deductible of 500</b> and a <b>maximum payment of 3000</b> per loss.</p><p>Calculate the <b>expected payment per loss</b>.</p>", "options": ["480", "640", "992", "508"], "answer": 3}, {"id": 16, "topic": "Variance with deductible", "stem": "<p>A loss X is <b>uniformly distributed on (0, 1000)</b>. An insurance policy pays the loss <b>in excess of a deductible of 200</b>.</p><p>Calculate the <b>variance of the insurer's payment per loss</b>.</p>", "options": ["68,267", "42,667", "53,333", "170,667"], "answer": 0}, {"id": 17, "topic": "Inflation leverage", "stem": "<p>Losses this year are <b>exponential with mean 1000</b>. A policy pays losses in excess of a <b>deductible of 500</b>.</p><p>Next year all losses increase uniformly by <b>20%</b>, and the deductible <b>stays at 500</b>.</p><p>Calculate the <b>percentage increase</b> in the expected payment per loss.</p>", "options": ["-9.5%", "20.0%", "30.4%", "40.0%"], "answer": 2}, {"id": 18, "topic": "MGF of a mixture", "stem": "<p>A random variable X has moment generating function</p><p><b>M(t) = 0.2 + 0.5/(1 − 2t) + 0.3e^(3t)</b>,   t < 1/2.</p><p>Calculate <b>Var(X)</b>.</p>", "options": ["3.09", "2.00", "4.80", "6.70"], "answer": 0}, {"id": 19, "topic": "Transformation (2-to-1)", "stem": "<p>X is <b>uniformly distributed on (−1, 3)</b>. Let <b>Y = X²</b>.</p><p>Calculate <b>P(Y ≤ 2)</b>.</p>", "options": ["0.2222", "0.3536", "0.6036", "0.7071"], "answer": 2}, {"id": 20, "topic": "Normal + mixed", "stem": "<p>Beacon Mutual insures two independent businesses for next month.</p><p>Business A has <b>no claim</b> with probability <b>0.55</b>; otherwise its claim is <b>normal</b> with mean <b>12</b> and standard deviation <b>2</b>. Business B has <b>no claim</b> with probability <b>0.65</b>; otherwise its claim is <b>normal</b> with mean <b>11</b> and standard deviation <b>2.5</b> (amounts in $000).</p><p>Calculate the probability that <b>B's claim amount exceeds A's</b> (a business with no claim has amount 0).</p>", "options": ["0.059", "0.252", "0.257", "0.377"], "answer": 1}, {"id": 21, "topic": "Binomial (two groups)", "stem": "<p>Beacon Mutual has two independent branches, each with <b>10 policies</b>. Each policy, independently, <b>lapses</b> with probability <b>0.15</b> during the year.</p><p>Calculate the probability that <b>at least 9 policies stay in force</b> in <b>exactly one</b> of the two branches.</p>", "options": ["0.496", "0.296", "0.544", "0.792"], "answer": 0}, {"id": 22, "topic": "Expected refund", "stem": "<p>A manufacturer sells <b>100 devices</b> for <b>250 each</b>, with a warranty. Device lifetimes are independent and <b>exponential with mean 3 years</b>.</p><p>A device that fails in year 1 gets a <b>full refund</b>, in year 2 a <b>half refund</b>, and in year 3 a <b>quarter refund</b>. No refund after 3 years.</p><p>Calculate the <b>expected total refund</b>.</p>", "options": ["10,535", "9,626", "15,803", "24,361"], "answer": 0}, {"id": 23, "topic": "Joint density region", "stem": "<p>X and Y have joint density <b>f(x, y) = 2(x + y)</b> for <b>0 < x < y < 1</b>, and 0 otherwise.</p><p>Calculate <b>P(Y < 2X)</b>.</p>", "options": ["0.2083", "0.4167", "0.5000", "0.5833"], "answer": 3}, {"id": 24, "topic": "Total variance", "stem": "<p>A risk index X is <b>uniformly distributed on (0, 2)</b>. Given X = x, the loss Y is <b>uniformly distributed on (0, x²)</b>.</p><p>Calculate <b>Var(Y)</b>.</p>", "options": ["0.2667", "0.3556", "0.6222", "1.0667"], "answer": 2}, {"id": 25, "topic": "Variance of a combination", "stem": "<p>Annual auto losses X and home losses Y at a Beacon Mutual branch satisfy <b>Var(X) = 25</b>, <b>Var(Y) = 16</b> and <b>Var(X + Y) = 53</b>.</p><p>A reinsurer takes <b>40% of X</b> and <b>30% of Y</b>. Calculate the variance of the losses <b>Beacon retains</b>.</p>", "options": ["6.88", "19.36", "21.88", "31.24"], "answer": 2}, {"id": 26, "topic": "Correlation from a table", "stem": "<p>For a randomly chosen Beacon Mutual household, X is the number of auto claims and Y is the number of home claims in a year. The joint probability function is shown in the table.</p><p>Calculate the <b>correlation coefficient</b> of X and Y.</p><table class=\"qtable\"><tr><th></th><th>X = 0</th><th>X = 1</th><th>X = 2</th></tr><tr><td>Y = 0</td><td>0.25</td><td>0.20</td><td>0.10</td></tr><tr><td>Y = 1</td><td>0.10</td><td>0.15</td><td>0.20</td></tr></table>", "options": ["0.122", "0.147", "0.764", "0.306"], "answer": 3}, {"id": 27, "topic": "Min / max of exponentials", "stem": "<p>A claim is closed only after two independent repairs are finished. Repair A takes an <b>exponential</b> time with <b>mean 2</b> days; repair B takes an <b>exponential</b> time with <b>mean 3</b> days.</p><p>Calculate the <b>expected time between</b> the first repair finishing and the second repair finishing.</p>", "options": ["1.20", "2.60", "2.50", "3.80"], "answer": 1}, {"id": 28, "topic": "CLT (sample size)", "stem": "<p>Each policy in a new Beacon Mutual portfolio has annual loss with <b>mean 500</b> and <b>standard deviation 1500</b>, independently. Beacon collects <b>600 per policy</b>.</p><p>Using the <b>central limit theorem</b>, calculate the <b>smallest number of policies</b> n for which the probability that total losses exceed total premium is <b>less than 0.01</b>.</p>", "options": ["1,218", "35", "609", "1,493"], "answer": 0}, {"id": 29, "topic": "P(X > 2Y)", "stem": "<p>The time X until a policyholder's next claim is <b>exponential with mean 4</b> years. Independently, the time Y until the policy's next rate review is <b>uniform on (0, 3)</b> years.</p><p>Calculate the probability that the next claim occurs <b>more than twice as late</b> as the rate review, P(X > 2Y).</p>", "options": ["0.042", "0.472", "0.518", "0.704"], "answer": 2}, {"id": 30, "topic": "Capstone: compound + deductible", "stem": "<p>The number of losses N on a Beacon Mutual commercial policy is <b>Poisson with mean 3</b>. Loss amounts are independent of N and of each other, and each is <b>uniform on (0, 1200)</b>.</p><p>For each loss, Beacon pays the amount <b>above a deductible of 300</b>.</p><p>Calculate the <b>variance of Beacon's total annual payment</b>.</p>", "options": ["265,781", "607,500", "341,719", "810,000"], "answer": 1}]}, "2": {"title": "Exam P Mock Exam 2", "questions": [{"id": 1, "topic": "Three-set counting", "stem": "<p>Beacon Mutual has <b>12,000</b> auto policyholders. Of these, <b>3,600 are young</b>, <b>5,500 are male</b> and <b>8,100 are married</b>.</p><p>There are <b>1,650 young males</b>, <b>3,900 married males</b> and <b>1,500 young married</b> policyholders. <b>640</b> are young, married and male.</p><p>How many policyholders are <b>female, single and not young</b>?</p>", "options": ["1,090", "1,850", "1,210", "2,490"], "answer": 2}, {"id": 2, "topic": "Independence (quadratic)", "stem": "<p>A Beacon Mutual auto policyholder may buy <b>collision</b> coverage, <b>disability</b> coverage, both or neither. Collision is <b>twice as likely</b> to be bought as disability, and the two purchases are <b>independent</b>.</p><p>The probability that a policyholder buys <b>at least one</b> of the two coverages is <b>0.625</b>.</p><p>Calculate the probability that a policyholder buys <b>exactly one</b> of the two coverages.</p>", "options": ["0.125", "0.500", "0.375", "0.625"], "answer": 1}, {"id": 3, "topic": "Bayes + Poisson", "stem": "<p>Beacon Mutual classifies drivers as <b>low</b>, <b>medium</b> or <b>high</b> risk, making up <b>50%</b>, <b>35%</b> and <b>15%</b> of its drivers. The annual number of accidents is <b>Poisson</b> with mean <b>0.1</b>, <b>0.25</b> and <b>0.6</b> respectively.</p><p>A randomly selected driver had <b>exactly one</b> accident last year.</p><p>Calculate the probability that the driver is <b>high risk</b>.</p>", "options": ["0.150", "0.351", "0.303", "0.396"], "answer": 2}, {"id": 4, "topic": "Conditional counting", "stem": "<p>A 4-person review team is chosen at random from <b>6 actuaries</b> and <b>5 underwriters</b>.</p><p>Given that the team includes <b>at least one underwriter</b>, calculate the probability that it has <b>more actuaries than underwriters</b>.</p>", "options": ["0.3175", "0.3030", "0.3485", "0.3651"], "answer": 0}, {"id": 5, "topic": "Renewals", "stem": "<p>Among Beacon Mutual's customers, <b>60%</b> hold an auto policy, <b>45%</b> hold a home policy and <b>20%</b> hold both.</p><p><b>70%</b> of auto-only customers renew, <b>50%</b> of home-only customers renew, and <b>90%</b> of customers with both policies renew at least one. Customers with no policy never renew.</p><p>A customer renews at least one policy. Calculate the probability that she <b>holds both</b> policies.</p>", "options": ["0.200", "0.218", "0.308", "0.585"], "answer": 2}, {"id": 6, "topic": "Telescoping pmf", "stem": "<p>The number of claims N on a policy satisfies <b>P(N = n) = 4 / [(n + 1)(n + 2)(n + 3)]</b>, n = 0, 1, 2, …</p><p>Calculate the probability that the policy has <b>at least two</b> claims, given that it has <b>at most five</b> claims.</p>", "options": ["0.131", "0.167", "0.864", "0.136"], "answer": 3}, {"id": 7, "topic": "Bayes then predict", "stem": "<p><b>4%</b> of applicants have a certain condition. A screening test is positive for <b>92%</b> of applicants with the condition and for <b>5%</b> of applicants without it. Repeated tests are <b>independent given</b> the applicant's status.</p><p>An applicant tests <b>positive</b>. She is tested again.</p><p>Calculate the probability that the <b>second test is also positive</b>.</p>", "options": ["0.428", "0.085", "0.399", "0.434"], "answer": 0}, {"id": 8, "topic": "Birthday problem", "stem": "<p>Five large losses occur in a year. Each loss is equally likely to fall in any of the <b>12 months</b>, independently.</p><p>Calculate the probability that <b>at least two</b> of the losses fall in the <b>same month</b>.</p>", "options": ["0.382", "0.581", "0.833", "0.618"], "answer": 3}, {"id": 9, "topic": "Binomial with a cap", "stem": "<p>A group policy covers <b>20</b> independent employees. Each employee files a claim during the year with probability <b>0.10</b>, and each claim is worth <b>1000</b>.</p><p>A stop-loss arrangement limits Beacon's payment to <b>3 claims</b> (3000) in total.</p><p>Calculate Beacon's <b>expected payment</b>.</p>", "options": ["969.2", "2,000.0", "1,809.7", "2,486.7"], "answer": 2}, {"id": 10, "topic": "Splitting Poisson", "stem": "<p>Beacon Mutual's monthly <b>auto</b> claims are <b>Poisson with mean 2</b>, and its monthly <b>home</b> claims are <b>Poisson with mean 1</b>, independently.</p><p>In a given month the total number of claims is <b>4</b>.</p><p>Calculate the probability that <b>at least 3</b> of them are auto claims.</p>", "options": ["0.312", "0.593", "0.323", "0.395"], "answer": 1}, {"id": 11, "topic": "Geometric (alternating)", "stem": "<p>Two adjusters negotiate a disputed claim in alternating rounds, <b>Adjuster A first</b>. Each round, independently, ends in settlement with probability <b>0.3</b>.</p><p>Calculate the probability that the claim is settled in one of <b>Adjuster B's</b> rounds.</p>", "options": ["0.210", "0.500", "0.588", "0.412"], "answer": 3}, {"id": 12, "topic": "Mixed distribution SD", "stem": "<p>A loss X has distribution function <b>F(x) = 1 − 0.6e^(−x/400) − 0.1e^(−x/100)</b> for x ≥ 0 (and 0 for x < 0).</p><p>Calculate the <b>standard deviation</b> of X.</p>", "options": ["185.7", "311.4", "386.8", "362.6"], "answer": 3}, {"id": 13, "topic": "Coinsurance + limit", "stem": "<p>Losses are <b>exponential with mean 1000</b>. A policy pays <b>80%</b> of each loss <b>above a deductible of 250</b>, with a <b>maximum payment of 1600</b> per loss.</p><p>Calculate the <b>expected payment per loss</b>.</p>", "options": ["497.3", "514.8", "538.7", "623.0"], "answer": 2}, {"id": 14, "topic": "Normal (averaging)", "stem": "<p>An engineer measures the height h of a building with two independent instruments. Each measurement is normal with mean h. The standard deviations are <b>0.006h</b> and <b>0.008h</b>.</p><p>The engineer reports the <b>simple average</b> of the two measurements.</p><p>Calculate the probability that the reported value is <b>within 0.008h</b> of h.</p>", "options": ["0.576", "0.890", "0.747", "0.945"], "answer": 1}, {"id": 15, "topic": "Percentile of a payment", "stem": "<p>Losses are <b>exponential with mean 1000</b>. A policy pays <b>75%</b> of the loss <b>in excess of a deductible of 500</b>.</p><p>Calculate the <b>90th percentile</b> of the insurer's <b>payment per loss</b>.</p>", "options": ["1,351.9", "1,226.9", "1,726.9", "1,802.6"], "answer": 0}, {"id": 16, "topic": "Waiting time (gamma)", "stem": "<p>Claims arrive at a Beacon Mutual branch as a <b>Poisson process with rate 2 per year</b>, so the time to the third claim has a gamma distribution.</p><p>The <b>first claim</b> arrives at time <b>0.5</b> years.</p><p>Calculate the probability that the <b>third claim</b> arrives <b>after time 1.5</b> years.</p>", "options": ["0.423", "0.594", "0.677", "0.406"], "answer": 3}, {"id": 17, "topic": "MGF of a sum", "stem": "<p>The number of claims X has moment generating function</p><p><b>M(t) = (0.4 + 0.6eᵗ)⁵ · exp[3(eᵗ − 1)]</b>.</p><p>Calculate <b>P(X = 2)</b>.</p>", "options": ["0.0252", "0.0138", "0.0446", "0.2304"], "answer": 0}, {"id": 18, "topic": "Within one SD", "stem": "<p>The proportion of a building damaged in a storm (scaled to 0–4) has density <b>f(x) = (3/64) x²(4 − x)</b>, for 0 < x < 4.</p><p>Calculate the probability that X lies <b>within one standard deviation of its mean</b>.</p>", "options": ["0.1792", "0.6827", "0.6400", "0.8192"], "answer": 2}, {"id": 19, "topic": "Change of variable", "stem": "<p>The time X (in years) to settle a claim is <b>uniform on (1, 4)</b>. Beacon tracks the settlement <b>speed Y = 1/X</b>.</p><p>Calculate the density of Y at y = 1/2, <b>f_Y(0.5)</b>.</p>", "options": ["0.0833", "0.3333", "1.3333", "0.6667"], "answer": 2}, {"id": 20, "topic": "Mixture + memoryless", "stem": "<p>A device is <b>good</b> with probability <b>0.6</b> and <b>defective</b> with probability <b>0.4</b>. A good device's lifetime is <b>exponential with mean 5</b> years; a defective device's lifetime is <b>exponential with mean 1</b> year.</p><p>A device has <b>survived 2 years</b>. Calculate its <b>expected remaining lifetime</b>.</p>", "options": ["3.400", "4.525", "5.000", "6.525"], "answer": 1}, {"id": 21, "topic": "Binomial (solvency)", "stem": "<p>Beacon Mutual sets aside a fund of <b>150</b> for a block of <b>25</b> independent policies. Each policy has at most one claim, with probability <b>0.04</b>, and every claim pays the same amount <b>C</b>.</p><p>Calculate the <b>largest C</b> for which the probability that claims exceed the fund is <b>less than 0.01</b>.</p>", "options": ["30.0", "50.0", "150.0", "37.5"], "answer": 3}, {"id": 22, "topic": "Conditional mean (discrete)", "stem": "<p>The number of claims N on a policy has probability function <b>P(N = n) = (n + 1) / 2ⁿ⁺²</b>, n = 0, 1, 2, …</p><p>Calculate <b>E[N | N ≥ 2]</b>.</p>", "options": ["2.00", "3.50", "3.00", "4.00"], "answer": 1}, {"id": 23, "topic": "Joint density region", "stem": "<p>X and Y have joint density <b>f(x, y) = ¾x</b> for <b>x > 0, y > 0, x + y < 2</b>, and 0 otherwise.</p><p>Calculate <b>P(X > 2Y)</b>.</p>", "options": ["0.5556", "0.2963", "0.3333", "0.4444"], "answer": 0}, {"id": 24, "topic": "Correlation (continuous)", "stem": "<p>The time Y until a claim is closed and the time X until its first payment have joint density <b>f(x, y) = e^(−y)</b> for <b>0 < x < y</b>, and 0 otherwise.</p><p>Calculate the <b>correlation</b> between X and Y.</p>", "options": ["0.707", "0.289", "0.500", "1.000"], "answer": 0}, {"id": 25, "topic": "Poisson thinning", "stem": "<p>The number of claims a policy files in a year is <b>Poisson with mean 2</b>. Each claim, independently, is <b>fraudulent with probability 0.1</b>.</p><p>This year the policy filed exactly <b>2 fraudulent</b> claims.</p><p>Calculate the <b>expected total number of claims</b> filed this year.</p>", "options": ["2.0", "4.0", "3.8", "20.0"], "answer": 2}, {"id": 26, "topic": "k-th order statistic", "stem": "<p>A data centre has <b>4 independent servers</b>, each with lifetime <b>exponential with mean 1 year</b>. The system <b>fails when the third server fails</b>.</p><p>Calculate the <b>expected lifetime of the system</b>.</p>", "options": ["0.583", "1.083", "0.750", "2.083"], "answer": 1}, {"id": 27, "topic": "Correlation of sum & difference", "stem": "<p>Two loss variables satisfy <b>Var(X) = 4</b>, <b>Var(Y) = 9</b> and <b>Cov(X, Y) = 1.5</b>.</p><p>Calculate the <b>correlation</b> between <b>X + Y</b> and <b>X − Y</b>.</p>", "options": ["−5.0000", "−0.3846", "−0.0312", "−0.3953"], "answer": 3}, {"id": 28, "topic": "CLT (average)", "stem": "<p>A portfolio has <b>64</b> independent policies, each with loss <b>uniformly distributed on (0, 10)</b>.</p><p>Using the <b>central limit theorem</b>, calculate the probability that the <b>average loss</b> exceeds <b>5.5</b>.</p>", "options": ["0.083", "0.244", "0.316", "0.431"], "answer": 0}, {"id": 29, "topic": "Conditional mean via Bayes", "stem": "<p>The number of storms X in a season is equally likely to be <b>1, 2, 3, 4, 5 or 6</b>. Given X = x, the number of storms Y that cause a claim is <b>Binomial(x, 0.5)</b>.</p><p>This season <b>exactly 2 storms</b> caused claims. Calculate <b>E[X | Y = 2]</b>.</p>", "options": ["3.939", "3.500", "4.000", "5.000"], "answer": 0}, {"id": 30, "topic": "Capstone: min of exponentials", "stem": "<p>A warranty covers a machine with <b>two independent components</b>. Their lifetimes are <b>exponential with means 4 and 6 years</b>. The machine stops at the <b>first</b> component failure, time T.</p><p>If T < 3, the warranty pays <b>1000 × (3 − T)</b>; otherwise it pays nothing.</p><p>Calculate the <b>expected warranty payment</b>.</p>", "options": ["408.2", "1,287.6", "744.1", "1,712.4"], "answer": 1}]}, "3": {"title": "Exam P Mock Exam 3", "questions": [{"id": 1, "topic": "Set algebra", "stem": "<p>For a randomly chosen Beacon Mutual customer, let A be the event that she has an auto policy and B the event that she has a home policy. You are given:</p><p><b>P(A ∪ B) = 0.82</b>,   <b>P(A ∪ B′) = 0.74</b>,   <b>P(A′ ∪ B) = 0.68</b>.</p><p>Calculate <b>P(A ∩ B)</b>.</p>", "options": ["0.18", "0.50", "0.56", "0.24"], "answer": 3}, {"id": 2, "topic": "Conditional (solve for overlap)", "stem": "<p>For two events A and B:  <b>P(A | B) = 0.4</b>,  <b>P(B | A) = 0.25</b>,  and  <b>P(A ∪ B) = 0.5</b>.</p><p>Calculate the probability that <b>exactly one</b> of A and B occurs.</p>", "options": ["0.091", "0.364", "0.423", "0.409"], "answer": 3}, {"id": 3, "topic": "Bayes + binomial", "stem": "<p>Supplier S provides <b>25%</b> of the parts Beacon's repair network uses; <b>8%</b> of S's parts are defective. Other suppliers' parts are <b>3%</b> defective.</p><p>A shipment comes from a single supplier. A random sample of <b>20</b> parts from it contains <b>exactly 2</b> defective parts.</p><p>Calculate the probability that the shipment came from <b>Supplier S</b>.</p>", "options": ["0.478", "0.250", "0.573", "0.703"], "answer": 0}, {"id": 4, "topic": "Arrangements (gaps)", "stem": "<p>An adjuster stacks <b>8 claim files</b> in a random order. <b>3</b> of them are auto claims; the other 5 are home claims.</p><p>Calculate the probability that <b>no two auto files are next to each other</b>.</p>", "options": ["0.1071", "0.3571", "0.1786", "0.6429"], "answer": 1}, {"id": 5, "topic": "Independent events", "stem": "<p>A Beacon Mutual policy can trigger three independent reviews: a <b>pricing</b> review (probability <b>0.2</b>), a <b>claims</b> review (<b>0.3</b>) and a <b>compliance</b> review (<b>0.4</b>).</p><p>Given that <b>at least one</b> review is triggered, calculate the probability that <b>exactly two</b> are triggered.</p>", "options": ["0.283", "0.188", "0.193", "0.319"], "answer": 0}, {"id": 6, "topic": "Two-stage Bayes", "stem": "<p>At the start of the year <b>70%</b> of Beacon's drivers are classed <b>good</b> and <b>30% bad</b>. During the year a good driver becomes bad with probability <b>0.1</b>, and a bad driver becomes good with probability <b>0.3</b>.</p><p>After the reclassification, a good driver has a claim with probability <b>0.05</b> and a bad driver with probability <b>0.20</b>.</p><p>A driver had a claim. Calculate the probability that she was <b>bad at the start</b> of the year.</p>", "options": ["0.300", "0.505", "0.609", "0.632"], "answer": 1}, {"id": 7, "topic": "Counting (groups)", "stem": "<p>Beacon Mutual's audit file has <b>20 claims</b>: <b>5 from each of 4 regions</b>. An auditor selects <b>6 claims at random</b> without replacement.</p><p>Calculate the probability that the sample has <b>exactly 2 claims from each of 3 regions</b> (and none from the fourth).</p>", "options": ["0.0258", "0.1032", "0.0879", "0.6192"], "answer": 1}, {"id": 8, "topic": "'At least one' sample size", "stem": "<p>Each policy in a new block independently produces a claim during the year with probability <b>0.03</b>.</p><p>Calculate the <b>smallest number of policies</b> needed so that the probability of <b>at least one claim</b> <b>exceeds 0.90</b>.</p>", "options": ["30", "75", "76", "99"], "answer": 2}, {"id": 9, "topic": "Poisson excess (stop-loss)", "stem": "<p>The number of claims N on a fleet is <b>Poisson with mean 1.5</b>. A reinsurer pays <b>500 for each claim beyond the second</b> (nothing if N ≤ 2).</p><p>Calculate the reinsurer's <b>expected payment</b>.</p>", "options": ["28.9", "140.5", "95.6", "250.0"], "answer": 1}, {"id": 10, "topic": "Binomial with uniform p", "stem": "<p>The claim probability p for a new type of policy is unknown; Beacon models it as <b>uniform on (0, 1)</b>. Given p, each of <b>10</b> policies independently has a claim with probability p.</p><p>Calculate the probability that <b>exactly 3</b> of the 10 policies have a claim.</p>", "options": ["0.0008", "0.0909", "0.1172", "0.3636"], "answer": 1}, {"id": 11, "topic": "Exponential (memoryless)", "stem": "<p>The time until a new driver's first accident is <b>exponential</b>. <b>30%</b> of new drivers have an accident within their <b>first 50 days</b>.</p><p>A driver has had <b>no accident in her first 30 days</b>. Calculate the probability that her first accident occurs <b>between day 50 and day 100</b>.</p>", "options": ["0.167", "0.210", "0.260", "0.300"], "answer": 2}, {"id": 12, "topic": "Gamma from its MGF", "stem": "<p>The total repair cost X of a claim has moment generating function <b>M(t) = (1 − 200t)⁻³</b>, t < 1/200.</p><p>Calculate <b>P(X > 600)</b>.</p>", "options": ["0.050", "0.199", "0.368", "0.423"], "answer": 3}, {"id": 13, "topic": "Solve for a deductible", "stem": "<p>A loss X takes the values <b>0, 500, 1000, 5000, 10000</b> with probabilities <b>0.40, 0.30, 0.15, 0.10, 0.05</b>.</p><p>Beacon wants a deductible d for which the <b>expected payment per loss is 800</b>.</p><p>Calculate <b>d</b>.</p>", "options": ["1,333.3", "500.0", "833.3", "1,166.7"], "answer": 0}, {"id": 14, "topic": "Normal from two percentiles", "stem": "<p>Claim amounts are <b>normally distributed</b>. <b>20%</b> of claims are <b>below 100</b> and <b>10%</b> are <b>above 400</b>.</p><p>Calculate the probability that a claim <b>exceeds 300</b>.</p>", "options": ["0.335", "0.283", "0.390", "0.717"], "answer": 1}, {"id": 15, "topic": "CDF with jumps", "stem": "<p>A loss X has distribution function</p><p><b>F(x) = 0</b> for x < 0;   <b>F(x) = 0.1 + 0.15x</b> for 0 ≤ x < 4;   <b>F(x) = 1</b> for x ≥ 4.</p><p>Calculate <b>Var(X)</b>.</p>", "options": ["1.76", "5.60", "2.24", "8.00"], "answer": 2}, {"id": 16, "topic": "Expected payment per payment", "stem": "<p>Losses have survival function <b>S(x) = [1000/(1000 + x)]⁴</b>, x > 0. A policy has a <b>deductible of 200</b>.</p><p>Calculate the <b>expected payment per payment</b> (i.e. given that a payment is made).</p>", "options": ["133.3", "192.9", "333.3", "400.0"], "answer": 3}, {"id": 17, "topic": "Function of a Poisson", "stem": "<p>The number of claims N is <b>Poisson with mean 2</b>. A policyholder's premium multiplier next year is <b>Y = 1.5ᴺ</b> (each claim raises the premium by 50%).</p><p>Calculate <b>Var(Y)</b>.</p>", "options": ["4.50", "7.12", "4.79", "12.18"], "answer": 2}, {"id": 18, "topic": "Between mode and mean", "stem": "<p>A claim amount X (in $000) has density <b>f(x) = x² e^(−x/2) / 16</b>, x > 0.</p><p>Calculate the probability that X lies <b>between its mode and its mean</b>.</p>", "options": ["0.253", "0.323", "0.423", "0.577"], "answer": 0}, {"id": 19, "topic": "Moments of eˣ", "stem": "<p>An investment's continuously compounded return X is <b>exponential with mean 1/3</b>. Its growth factor is <b>Y = eˣ</b>.</p><p>Calculate <b>Var(Y)</b>.</p>", "options": ["0.216", "1.500", "0.750", "3.000"], "answer": 2}, {"id": 20, "topic": "Franchise deductible", "stem": "<p>Losses are <b>exponential with mean 1000</b>. A policy has a <b>franchise deductible of 500</b>: it pays nothing on losses of 500 or less, and pays the <b>full loss</b> when the loss exceeds 500.</p><p>Calculate the <b>expected payment per loss</b>.</p>", "options": ["909.8", "606.5", "1,000.0", "1,500.0"], "answer": 0}, {"id": 21, "topic": "Hypergeometric variance", "stem": "<p>A file of <b>50</b> claims contains <b>12</b> with coding errors. An auditor samples <b>10</b> claims <b>without replacement</b>.</p><p>Calculate the <b>variance</b> of the number of claims with coding errors in the sample.</p>", "options": ["1.459", "1.489", "1.824", "2.400"], "answer": 1}, {"id": 22, "topic": "Truncated mean", "stem": "<p>The loss ratio X of a small group policy has density <b>f(x) = 20x(1 − x)³</b>, 0 < x < 1.</p><p>Calculate <b>E[X | X < 0.5]</b>.</p>", "options": ["0.2188", "0.2500", "0.3333", "0.2692"], "answer": 3}, {"id": 23, "topic": "Conditional variance (discrete)", "stem": "<p>X is the number of auto claims and Y the number of home claims for a household. Their joint probability function is <b>p(x, y) = c(x + 2y)</b> for x = 0, 1, 2 and y = 0, 1.</p><p>Calculate <b>Var(X | Y = 1)</b>.</p>", "options": ["0.5556", "0.7431", "2.1111", "0.6173"], "answer": 3}, {"id": 24, "topic": "P(X + Y < 1)", "stem": "<p>The loss ratios X and Y of two lines have joint density <b>f(x, y) = 6xy²</b> for 0 < x < 1, 0 < y < 1.</p><p>Calculate <b>P(X + Y < 1)</b>.</p>", "options": ["0.0333", "0.1000", "0.5000", "0.9000"], "answer": 1}, {"id": 25, "topic": "E[min] (mixed types)", "stem": "<p>A policy ends at the <b>earlier</b> of two independent times: the lapse time X, <b>uniform on (0, 10)</b> years, and the death time Y, <b>exponential with mean 10</b> years.</p><p>Calculate the <b>expected time until the policy ends</b>.</p>", "options": ["3.679", "3.333", "5.000", "6.321"], "answer": 0}, {"id": 26, "topic": "Cov(loss, payment)", "stem": "<p>A loss X is <b>uniform on (0, 1000)</b>. The insurer pays <b>Y = max(X − 200, 0)</b>.</p><p>Calculate <b>Cov(X, Y)</b>.</p>", "options": ["74,667", "66,667", "83,333", "234,667"], "answer": 0}, {"id": 27, "topic": "Poisson with uniform mean", "stem": "<p>The annual claim rate Λ of a policyholder is <b>uniform on (1, 3)</b>. Given Λ = λ, the number of claims is <b>Poisson with mean λ</b>.</p><p>Calculate the probability that the policyholder has <b>no claims</b> in a year.</p>", "options": ["0.135", "0.318", "0.159", "0.865"], "answer": 2}, {"id": 28, "topic": "CLT (discrete counts)", "stem": "<p>Each of Beacon Mutual's <b>400</b> independent policies has <b>0</b> claims with probability <b>0.7</b>, <b>1</b> claim with probability <b>0.2</b> and <b>2</b> claims with probability <b>0.1</b>.</p><p>Using the <b>normal approximation without continuity correction</b>, calculate the probability that the total number of claims <b>exceeds 175</b>.</p>", "options": ["0.166", "0.477", "0.129", "0.871"], "answer": 2}, {"id": 29, "topic": "Conditional on a region", "stem": "<p>A claim's reported amount X and its paid amount Y (both scaled to 0–1) have joint density <b>f(x, y) = 8xy</b> for <b>0 < y < x < 1</b>.</p><p>Calculate <b>P(Y < 0.25 | X > 0.5)</b>.</p>", "options": ["0.0938", "0.1111", "0.1211", "0.1000"], "answer": 3}, {"id": 30, "topic": "Capstone: update then price", "stem": "<p>A driver is equally likely to be <b>low risk</b> (claims <b>Poisson with mean 0.5</b> per year) or <b>high risk</b> (<b>Poisson with mean 1.5</b>). Her type does not change over time.</p><p>She had <b>2 claims</b> last year. Each claim amount is <b>exponential with mean 1000</b>, and the policy has a <b>deductible of 500 per claim</b>.</p><p>Calculate Beacon's <b>expected payment</b> for her next year.</p>", "options": ["606.5", "1,213.1", "769.1", "1,268.0"], "answer": 2}]}}</script>
+<script id="lock-data" type="application/json">{"1": "u2qul5deks", "2": "8upipuvoz7", "3": "1tak6kmqi9l"}</script>
+<script>
+const WA_NUMBER = "601127066282";
+const EXAMS = JSON.parse(document.getElementById("exam-data").textContent);
+const LOCKS = JSON.parse(document.getElementById("lock-data").textContent); // {examKey: sha-ish hash}
+const LET = "ABCD";
+const PASS = 21;
+
+function $(id){ return document.getElementById(id) }
+function show(id){ for(const s of ["s-menu","s-start","s-exam","s-result"]) $(s).classList.toggle("hidden", s!==id); window.scrollTo(0,0); }
+function esc(s){ return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+function fmtT(sec){ sec=Math.max(0,Math.round(sec)); const h=Math.floor(sec/3600), m=Math.floor(sec%3600/60), s=sec%60; return (h?h+":"+String(m).padStart(2,"0"):m)+":"+String(s).padStart(2,"0"); }
+
+/* simple non-cryptographic hash, just enough to avoid storing passwords in plain text */
+function hash(str){
+  let h1=0xdeadbeef, h2=0x41c6ce57;
+  for(let i=0,ch;i<str.length;i++){ ch=str.charCodeAt(i); h1=Math.imul(h1^ch,2654435761); h2=Math.imul(h2^ch,1597334677); }
+  h1=Math.imul(h1^(h1>>>16),2246822507); h1^=Math.imul(h2^(h2>>>13),3266489909);
+  h2=Math.imul(h2^(h2>>>16),2246822507); h2^=Math.imul(h1^(h1>>>13),3266489909);
+  return (4294967296*(2097151&h2)+(h1>>>0)).toString(36);
+}
+
+function unlocked(key){ try{ return localStorage.getItem("examp_unlock_"+key)==="1" }catch(e){ return false } }
+function setUnlocked(key){ try{ localStorage.setItem("examp_unlock_"+key,"1") }catch(e){} }
+
+/* ---------- MENU ---------- */
+const EXAM_META = {
+  "1":{label:"Mock Exam 1", blurb:"General probability &middot; univariate &middot; multivariate &mdash; Set 1"},
+  "2":{label:"Mock Exam 2", blurb:"General probability &middot; univariate &middot; multivariate &mdash; Set 2"},
+  "3":{label:"Mock Exam 3", blurb:"General probability &middot; univariate &middot; multivariate &mdash; Set 3"}
+};
+
+function renderMenu(){
+  const wrap = $("cardWrap"); wrap.innerHTML = "";
+  for(const key of Object.keys(EXAMS)){
+    const meta = EXAM_META[key];
+    const card = document.createElement("div");
+    card.className = "card";
+    if(unlocked(key)){
+      card.innerHTML = `<div class="ct"><b>${meta.label}</b><span>${meta.blurb}</span></div>
+        <div class="state"><span class="badge">Unlocked</span><button class="btn sm" data-go="${key}" type="button">Start</button></div>`;
+    } else {
+      card.innerHTML = `<div class="ct"><b>${meta.label}</b><span>${meta.blurb} &mdash; password required</span></div>
+        <div class="state">
+          <div>
+            <div class="lockline">
+              <input type="password" placeholder="Password" id="pw-${key}" autocomplete="off">
+              <button class="btn sm" data-unlock="${key}" type="button">Unlock</button>
+            </div>
+            <div class="err" id="err-${key}"></div>
+          </div>
+        </div>`;
+    }
+    wrap.appendChild(card);
+  }
+  wrap.querySelectorAll("[data-unlock]").forEach(b=>b.addEventListener("click", ()=>tryUnlock(b.getAttribute("data-unlock"))));
+  wrap.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click", ()=>openStart(b.getAttribute("data-go"))));
+  wrap.querySelectorAll("input[type=password]").forEach(inp=>{
+    inp.addEventListener("keydown", e=>{ if(e.key==="Enter"){ const key=inp.id.split("-")[1]; tryUnlock(key); } });
+  });
+}
+function tryUnlock(key){
+  const inp = $("pw-"+key), err = $("err-"+key);
+  const val = (inp.value||"").trim();
+  if(hash(val) === LOCKS[key]){
+    setUnlocked(key); err.textContent=""; renderMenu();
+  } else {
+    err.textContent = "Incorrect password. Check with Raymond if you don't have it.";
+  }
+}
+document.addEventListener("click", e=>{
+  if(e.target && e.target.id==="backLink1"){ e.preventDefault(); show("s-menu"); renderMenu(); }
+});
+
+/* ---------- STATE / START ---------- */
+let CUR_KEY=null, Q=null, N=0, S=null, timerId=null, shownAt=null;
+function storeKey(){ return "examp_state_"+CUR_KEY }
+function lsGet(){ try{ const v=localStorage.getItem(storeKey()); return v?JSON.parse(v):null }catch(e){ return null } }
+function lsSet(){ try{ localStorage.setItem(storeKey(), JSON.stringify(S)) }catch(e){} }
+function lsDel(){ try{ localStorage.removeItem(storeKey()) }catch(e){} }
+
+function openStart(key){
+  CUR_KEY = key; Q = EXAMS[key].questions; N = Q.length;
+  $("startTitle").textContent = EXAM_META[key].label;
+  $("startSub").textContent = "Exam P practice &middot; "+EXAM_META[key].label;
+  $("examSub").textContent = EXAM_META[key].label;
+  $("passFact").textContent = PASS+" / "+N;
+  show("s-start");
+  const old = lsGet();
+  const r = $("resume");
+  if(old && !old.finishedAt && old.endAt>Date.now()){
+    r.classList.remove("hidden");
+    r.innerHTML = `<b>You have this test in progress</b> (${esc(old.name||"")}, ${fmtT((old.endAt-Date.now())/1000)} left; the clock kept running). <div style="margin-top:8px"><button class="btn" id="rBtn" type="button">Resume</button> <button class="btn sec" id="rNew" type="button">Discard and start over</button></div>`;
+    $("rBtn").onclick = ()=>{ S=old; enter(); };
+    $("rNew").onclick = ()=>{ lsDel(); r.classList.add("hidden"); };
+  } else {
+    r.classList.add("hidden"); r.innerHTML="";
+  }
+  $("startBtn").onclick = ()=>{
+    S = { key:CUR_KEY, startAt:Date.now(), endAt:Date.now()+3*3600*1000, cur:0, ans:{}, flag:{}, conf:{}, tq:{}, finishedAt:null, score:null };
+    lsSet(); enter();
+  };
+}
+
+function enter(){ show("s-exam"); buildNav(); render(); startTimer(); }
+
+function startTimer(){
+  clearInterval(timerId);
+  const tick = ()=>{
+    const left = (S.endAt-Date.now())/1000;
+    const t = $("timer");
+    t.textContent = fmtT(left);
+    t.className = "timer"+(left<=300?" crit":left<=900?" low":"");
+    if(left<=0){ clearInterval(timerId); finish(true); }
+  };
+  tick();
+  timerId = setInterval(tick, 1000);
+}
+
+function logTime(){ if(shownAt!==null && S){ const k=Q[S.cur].id; S.tq[k]=(S.tq[k]||0)+(Date.now()-shownAt)/1000; } shownAt=Date.now(); }
+function go(i){ logTime(); S.cur=i; lsSet(); buildNav(); render(); window.scrollTo(0,0); }
+
+function buildNav(){
+  const nav = $("nav"); nav.innerHTML="";
+  for(let i=0;i<N;i++){
+    const q=Q[i]; const done = S.ans[q.id]!==undefined;
+    const b = document.createElement("button");
+    b.type="button"; b.className="chip"+(done?" done":"")+(i===S.cur?" cur":"")+(S.flag[q.id]?" flag":"");
+    b.textContent = i+1;
+    b.addEventListener("click", ()=>go(i));
+    nav.appendChild(b);
+  }
+  const answered = Object.keys(S.ans).length;
+  $("cnt").textContent = answered+" of "+N+" answered";
+}
+
+function render(){
+  const q = Q[S.cur];
+  const a = S.ans[q.id];
+  const c = S.conf[q.id];
+  let h = `<div class="qh"><h2>Question ${S.cur+1}</h2><span>${S.cur+1} of ${N}</span></div>
+    <div class="stem">${q.stem}</div>
+    <fieldset class="opts"><legend>Choose one answer</legend>
+    ${q.options.map((o,j)=>`<label class="opt"><input type="radio" name="opt" value="${j}" ${a===j?"checked":""}><span class="l">${LET[j]}</span><span class="tx">${o}</span></label>`).join("")}
+    </fieldset>
+    <div class="conf"><button type="button" class="flagbtn" id="flagBtn" aria-pressed="${!!S.flag[q.id]}">${S.flag[q.id]?"Flagged for review":"Flag for review"}</button>
+      ${a!==undefined?'<button type="button" class="clr" id="clrBtn">Clear answer</button>':""}</div>
+    <div class="qf"><button class="btn sec" id="prev" type="button" ${S.cur===0?"disabled":""}>Previous</button>
+      ${S.cur===N-1?'<button class="btn" id="fin2" type="button">Review and finish</button>':'<button class="btn" id="next" type="button">Next</button>'}</div>`;
+  $("qbox").innerHTML = h;
+  logTime();
+  $("qbox").querySelectorAll("input[name=opt]").forEach(inp=>{
+    inp.addEventListener("change", ()=>{ S.ans[q.id]=Number(inp.value); lsSet(); buildNav(); render(); });
+  });
+  $("flagBtn").addEventListener("click", ()=>{ S.flag[q.id]=!S.flag[q.id]; lsSet(); buildNav(); render(); });
+  const clr = $("clrBtn"); if(clr) clr.addEventListener("click", ()=>{ delete S.ans[q.id]; lsSet(); buildNav(); render(); });
+  const prev = $("prev"); if(!prev.disabled) prev.addEventListener("click", ()=>go(S.cur-1));
+  const next = $("next"); if(next) next.addEventListener("click", ()=>go(S.cur+1));
+  const fin2 = $("fin2"); if(fin2) fin2.addEventListener("click", ()=>askFinish());
+}
+
+function askFinish(){
+  const answered = Object.keys(S.ans).length;
+  const left = N-answered;
+  $("mb").textContent = left>0
+    ? `You have ${left} question${left===1?"":"s"} unanswered. You can still go back, or finish now.`
+    : `All ${N} questions are answered. Ready to see your score?`;
+  $("modal").classList.remove("hidden");
+}
+$("finishBtn").addEventListener("click", askFinish);
+$("mNo").addEventListener("click", ()=>$("modal").classList.add("hidden"));
+$("mYes").addEventListener("click", ()=>{ $("modal").classList.add("hidden"); finish(false); });
+
+function grade(){
+  let score=0; const byTopic={};
+  for(const q of Q){
+    const topic = q.topic||"General";
+    byTopic[topic] = byTopic[topic] || {ok:0,n:0};
+    byTopic[topic].n++;
+    if(S.ans[q.id]===q.answer){ score++; byTopic[topic].ok++; }
+  }
+  return {score, byTopic};
+}
+
+function finish(auto){
+  logTime();
+  clearInterval(timerId);
+  const g = grade();
+  S.score = g.score; S.byTopic = g.byTopic; S.finishedAt = Date.now();
+  lsSet();
+  renderResult(auto);
+  show("s-result");
+}
+
+function renderResult(auto){
+  const sc=S.score, pass=sc>=PASS, used=(S.finishedAt-S.startAt)/1000;
+  const label = EXAM_META[CUR_KEY].label;
+  let topicsHtml = "";
+  for(const t of Object.keys(S.byTopic)){
+    const b = S.byTopic[t];
+    const pct = Math.round(100*b.ok/b.n);
+    topicsHtml += `<div class="trow"><span class="tn">${esc(t)}</span><span class="tbar"><i style="width:${pct}%"></i></span><span class="tv">${b.ok}/${b.n}</span></div>`;
+  }
+  let reviewHtml = "";
+  Q.forEach((q,i)=>{
+    const given = S.ans[q.id];
+    const ok = given===q.answer;
+    const givenTxt = given===undefined ? "No answer" : LET[given];
+    reviewHtml += `<div class="rrow ${ok?"ok":"bad"}"><span class="rn">${i+1}</span><span class="rt">${esc(q.topic||"")}</span><span class="ra">${ok?"Correct":"Your: "+givenTxt+" &middot; Correct: "+LET[q.answer]}</span></div>`;
+  });
+  const waText = encodeURIComponent(`Hi Raymond, I just finished ${label} on ActuaryMadeEasy.\nScore: ${sc}/${N} (${pass?"pass level":"below pass mark"}).\nI'll send over the PDF of my results next.`);
+  $("resbox").innerHTML = `
+  <header>
+    <div class="brand"><div class="mark" aria-hidden="true">&lambda;</div><div class="wm"><b>ActuaryMadeEasy</b><span>${esc(label)} &mdash; results</span></div></div>
+    <div class="fmt">Finished ${auto?"automatically (time up)":"by you"}</div>
+  </header>
+  <h1>Your result</h1>
+  <p class="meta">Time used: ${fmtT(used)} of 3:00:00</p>
+  <div class="score ${pass?"pass":"fail"}">
+    <div class="big">${sc}<small>&nbsp;/ ${N}</small></div>
+    <div class="verdict"><b>${pass?"Estimated pass":"Below estimated pass mark"}</b>
+      <p>${pass?`You scored at or above ${PASS} of ${N} (70%). On this paper, that is pass-level performance.`:`You need ${PASS} of ${N} (70%) for an estimated pass. You are ${PASS-sc} question${PASS-sc===1?"":"s"} short.`}</p></div>
+  </div>
+  <div class="scale" aria-hidden="true"><i style="width:${sc/N*100}%"></i><b style="left:${PASS/N*100}%"></b></div>
+  <div class="scalel" aria-hidden="true"><span style="left:0">0</span><span style="left:${PASS/N*100}%;transform:translateX(-50%)">pass mark ${PASS}</span><span style="right:0">${N}</span></div>
+  <div class="topics"><h3>By topic</h3>${topicsHtml}</div>
+  <div class="next">
+    <h2>Send Raymond your results</h2>
+    <p>1. Click <b>Save as PDF</b> below &mdash; your browser's print dialog opens; choose "Save as PDF" as the destination.</p>
+    <p>2. Then tap <b>Send on WhatsApp</b> and attach the PDF you just saved.</p>
+    <div class="row">
+      <button class="btn" id="printBtn" type="button">Save as PDF</button>
+      <a class="btn sec" id="waResult" href="https://wa.me/${WA_NUMBER}?text=${waText}" target="_blank" rel="noopener">Send on WhatsApp</a>
+      <button class="btn sec" id="retakeBtn" type="button">Retake this mock</button>
+      <button class="btn sec" id="menuBtn" type="button">Back to mock list</button>
+    </div>
+  </div>
+  <div class="review"><h3>Question-by-question</h3>${reviewHtml}</div>
+  `;
+  $("printBtn").addEventListener("click", ()=>window.print());
+  $("retakeBtn").addEventListener("click", ()=>{ lsDel(); openStart(CUR_KEY); });
+  $("menuBtn").addEventListener("click", ()=>{ show("s-menu"); renderMenu(); });
+}
+
+/* ---------- init ---------- */
+$("waFloat").href = "https://wa.me/"+WA_NUMBER+"?text="+encodeURIComponent("Hi Raymond, I have a question about the Exam P practice mocks.");
+renderMenu();
+show("s-menu");
+</script>
+</body>
+</html>
